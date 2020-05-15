@@ -3,9 +3,9 @@ package parsing.messages.types;
 import parsing.messages.Message;
 import parsing.messages.payloads.Payload;
 
-public class VoteMessage implements Message {
+public class TransactionMessage implements Message {
 
-    public VoteMessage() {}
+    public TransactionMessage() {}
 
     private String messageType;
     private Payload payload;
