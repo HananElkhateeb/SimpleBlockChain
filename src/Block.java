@@ -5,16 +5,16 @@ import java.util.Map;
 
 public class Block {
     private int blockThreshold;
-    private String prevBlockHash;
-    private String merkleTreeRoot;
+    private String prevBlockHash = "";
+    private String merkleTreeRoot = "";
     private long timeStamp;
     private int nonce = -1;
-    private String hash;
+    private String hash = "";
     private Map<String, Transaction> transactions;
     
 
 
-    public Block (String prevHash){
+    public Block (String prevBlockHash){
         this.prevBlockHash = prevBlockHash;
         this.timeStamp = new Date().getTime();
     }
@@ -35,10 +35,6 @@ public class Block {
         this.prevBlockHash = prevBlockHash;
     }
 
-    public String getMerkleTreeRoot() {
-        return merkleTreeRoot;
-    }
-
     public long getTimeStamp() {
         return timeStamp;
     }
@@ -55,28 +51,41 @@ public class Block {
         this.hash = hash;
     }
 
+    public String getMerkleTreeRoot() { return merkleTreeRoot; }
+
+    public void setMerkleTreeRoot(String merkleTreeRoot) { this.merkleTreeRoot = merkleTreeRoot; }
+
     public Map<String, Transaction> getTransactions() {
         return transactions;
     }
+
     public Transaction getTransaction(String txid) {
         return transactions.get(txid);
     }
 
-    public void addTransactions(Transaction tx) {
-        this.transactions.put(Long.toString(tx.getTransactionID()), tx);
+    public void addTransaction(Transaction tx) {
+        transactions.put(Long.toString(tx.getTransactionID()), tx);
     }
 
-    public void calculateMerkleTreeRoot() {
+    public String calculateMerkleTreeRoot() {
+        return Utils.calculateMerkleTreeRoot(transactions);
     }
 
-
-    public void calculateBlockHash(){
-
+    public boolean verifyHash(){
+        return hash.equals(calculateBlockHash());
     }
 
-    public void solveBlock (int type){
+    public String calculateBlockHash(){
+        return Utils.sha256(prevBlockHash + merkleTreeRoot + Long.toString(timeStamp) + Integer.toString(nonce));
+    }
+
+    private String getDificultyString(int difficulty) {
+        return new String(new char[difficulty]).replace('\0', '0');
+    }
+
+    public void solveBlock (int type, int difficulty){
         if (type == 1){
-            proofOfWork();
+            proofOfWork(difficulty);
         } else if (type == 2){
             ByzantineFaultTolerance();
         } else {
@@ -84,15 +93,16 @@ public class Block {
         }
     }
 
-    public void proofOfWork(){
-
+    public void proofOfWork(int difficulty){
+        String target = getDificultyString(difficulty);
+        do {
+            nonce++;
+            hash = calculateBlockHash();
+        } while (!hash.substring(0,difficulty).equals(target));
     }
 
+    //TODO
     public void ByzantineFaultTolerance(){
-
-    }
-
-    public void addTransaction(Transaction transaction){
 
     }
 
