@@ -2,6 +2,8 @@ import java.security.MessageDigest;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class Utils {
 	/*
@@ -67,5 +69,26 @@ public class Utils {
 		}catch(Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public static String calculateMerkleTreeRoot(Map<String, Transaction> transactions) {
+		int treeSize = transactions.size();
+		ArrayList<String> prevTreeLayer = new ArrayList<>();
+
+		for(Transaction transaction: transactions.values()){
+			prevTreeLayer.add(transaction.calculateHash());
+		}
+		ArrayList<String> treeLayer = prevTreeLayer;
+
+		while (treeSize > 1) {
+			treeLayer = new ArrayList<>();
+			for (int i = 1; i < prevTreeLayer.size(); i+=2) {
+				treeLayer.add(sha256(prevTreeLayer.get(i-1) + prevTreeLayer.get(i)));
+			}
+			treeSize = treeLayer.size();
+			prevTreeLayer = treeLayer;
+		}
+
+		return (treeLayer.size() == 1) ? treeLayer.get(0) : "";
 	}
 }
