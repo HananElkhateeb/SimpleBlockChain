@@ -1,7 +1,7 @@
 public class Controller implements IController {
     @Override
-    public void verifyTransaction() {
-
+    public boolean verifyTransaction(Transaction tx) {
+    	return tx.verify();
     }
 
     @Override

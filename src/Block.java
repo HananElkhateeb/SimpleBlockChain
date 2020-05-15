@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class Block {
     private int blockThreshold;
@@ -9,12 +10,13 @@ public class Block {
     private long timeStamp;
     private int nonce = -1;
     private String hash;
-    private List<Transaction> transactions;
+    private Map<String, Transaction> transactions;
+    
+
 
     public Block (String prevHash){
         this.prevBlockHash = prevBlockHash;
         this.timeStamp = new Date().getTime();
-        transactions = new ArrayList<>();
     }
 
     public int getBlockThreshold() {
@@ -53,12 +55,15 @@ public class Block {
         this.hash = hash;
     }
 
-    public List<Transaction> getTransactions() {
+    public Map<String, Transaction> getTransactions() {
         return transactions;
     }
+    public Transaction getTransaction(String txid) {
+        return transactions.get(txid);
+    }
 
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
+    public void addTransactions(Transaction tx) {
+        this.transactions.put(Long.toString(tx.getTransactionID()), tx);
     }
 
     public void calculateMerkleTreeRoot() {

@@ -1,5 +1,5 @@
 public interface IController {
-    void verifyTransaction();
+    boolean verifyTransaction(Transaction tx);
     void mineBlock();
     void broadcastBlock();
 }

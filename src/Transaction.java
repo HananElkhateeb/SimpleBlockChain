@@ -1,18 +1,22 @@
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public class Transaction {
     private long transactionID;
-    private List<TransactionInput> inputs;
+    private TransactionInput inputs;
     private List<TransactionOutput> outputs;
     private String hash;
+	public byte[] signature;
+	
 
     public Transaction(){
         transactionID = -1;
-        inputs = new ArrayList<>();
+        inputs = null;
         outputs = new ArrayList<>();
         hash = "";
     }
@@ -24,12 +28,13 @@ public class Transaction {
     public void setTransactionID(long transactionID) {
         this.transactionID = transactionID;
     }
+   
 
-    public List<TransactionInput> getInputs() {
+    public TransactionInput getInputs() {
         return inputs;
     }
 
-    public void setInputs(List<TransactionInput> inputs) {
+    public void setInputs(TransactionInput inputs) {
         this.inputs = inputs;
     }
 
@@ -50,14 +55,72 @@ public class Transaction {
     }
 
     public void generateSignature(PrivateKey privateKey){
-
+    	String senderPubKeySTR = Base64.getEncoder().encodeToString(inputs.getSender().getEncoded());
+    	StringBuffer outputSTR = new StringBuffer();
+    	for(TransactionOutput txo : outputs) {
+    		outputSTR.append(Base64.getEncoder().encodeToString(txo.getReciever().getEncoded()));
+    		outputSTR.append(Float.toString(txo.getValue()));
+    	}
+		signature = Utils.digialSignature(privateKey, senderPubKeySTR+outputSTR.toString());
     }
 
-    public void verifySignature(){
-
+    public boolean verifySignature(){
+    	String senderPubKeySTR = Base64.getEncoder().encodeToString(inputs.getSender().getEncoded());
+    	StringBuffer outputSTR = new StringBuffer();
+    	for(TransactionOutput txo : outputs) {
+    		outputSTR.append(Base64.getEncoder().encodeToString(txo.getReciever().getEncoded()));
+    		outputSTR.append(Float.toString(txo.getValue()));
+    	}
+    	String data = senderPubKeySTR+outputSTR.toString();
+		return Utils.verifyDigitalSign(inputs.getSender(), data, signature);
     }
 
     public String calculateHash(){
-        return null;
+    	String senderPubKeySTR = Base64.getEncoder().encodeToString(inputs.getSender().getEncoded());
+    	StringBuffer outputSTR = new StringBuffer();
+    	for(TransactionOutput txo : outputs) {
+    		outputSTR.append(Base64.getEncoder().encodeToString(txo.getReciever().getEncoded()));
+    		outputSTR.append(Float.toString(txo.getValue()));
+    	}
+    	String data = senderPubKeySTR+outputSTR.toString();
+    	//current time to not have same hash value
+    	return Utils.sha256(data + new Date().getTime());
     }
+    
+    
+    //TODO not complete
+    public boolean verify() {
+    	//Check Signature
+    	if(verifySignature() == false) {
+			System.out.println("#Transaction Signature failed to verify");
+			return false;
+		}
+    	
+    	String prevTX = Long.toString(inputs.getPrevTX());
+    	Short prevO = inputs.getPrevOutputIndex();
+    	Block currBlock = new Block("prevHash"); //TODO current block
+    	Transaction prevTx = currBlock.getTransaction(prevTX);
+    	TransactionOutput txIN = prevTx.getOutputs().get(prevO);
+    	
+		//TODO check same public key from previous transaction, need to get the transaction list
+    	if(txIN.getReciever() != inputs.getSender()) {
+			System.out.println("#Transactions public keys don't match");
+    		return false;
+    	}
+		//check credit is enough
+    	float totalVal = this.computeTotal();
+    	if(totalVal > txIN.getValue()) {
+    		System.out.println("#Transactions credit is not enough");
+    		return false;
+    	}
+
+		return true;
+    }
+
+	private float computeTotal() {
+		float total = 0;
+		for(TransactionOutput txo : outputs)
+			total += txo.getValue();
+		return total;
+	}
 }
