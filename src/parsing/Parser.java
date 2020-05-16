@@ -59,16 +59,16 @@ public class Parser {
         return receivedMessage;
     }
 
-    public static void main(String[] args) {
-        Message message = new Message();
-        message.messageType = MessagesTypes.BLOCK_MESSAGE.toString();
-        BlockPayload payload = new BlockPayload();
-        payload.setInput(new ArrayList<>(Arrays.asList(1, 2, 3)));
-        payload.setOutput(new ArrayList<>(Arrays.asList(4, 5, 6)));
-        message.payload = payload;
-
-        Parser parser = new Parser();
-        String jsonMessage = parser.serializeMessage(message);
-        parser.deSerializeMessage(jsonMessage);
-    }
+//    public static void main(String[] args) {
+//        Message message = new Message();
+//        message.messageType = MessagesTypes.BLOCK_MESSAGE.toString();
+//        BlockPayload payload = new BlockPayload();
+//        payload.setInput(new ArrayList<>(Arrays.asList(1, 2, 3)));
+//        payload.setOutput(new ArrayList<>(Arrays.asList(4, 5, 6)));
+//        message.payload = payload;
+//
+//        Parser parser = new Parser();
+//        String jsonMessage = parser.serializeMessage(message);
+//        parser.deSerializeMessage(jsonMessage);
+//    }
 }
