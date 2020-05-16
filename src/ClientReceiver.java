@@ -8,10 +8,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 // Network Server class
-public class NodeReceiver {
+public class ClientReceiver {
     public static void main(String[] args) throws IOException {
-        // server is listening on port 5056
-        ServerSocket ss = new ServerSocket(5056);
+        // server is listening on this port
+        ServerSocket ss = new ServerSocket(6060);
 
         // running infinite loop for getting
         // client request
@@ -31,7 +31,7 @@ public class NodeReceiver {
                 System.out.println("Assigning new thread for this client");
 
                 // create a new thread object
-                Thread t = new NodeReceiverHandler(s, dis, dos);
+                Thread t = new ClientReceiverHandler(s, dis, dos);
 
                 // Invoking the start() method
                 t.start();
@@ -45,7 +45,7 @@ public class NodeReceiver {
 }
 
 // Network ClientHandler class
-class NodeReceiverHandler extends Thread {
+class ClientReceiverHandler extends Thread {
     DateFormat fordate = new SimpleDateFormat("yyyy/MM/dd");
     DateFormat fortime = new SimpleDateFormat("hh:mm:ss");
     final DataInputStream dis;
@@ -54,7 +54,7 @@ class NodeReceiverHandler extends Thread {
 
 
     // Constructor
-    public NodeReceiverHandler(Socket s, DataInputStream dis, DataOutputStream dos) {
+    public ClientReceiverHandler(Socket s, DataInputStream dis, DataOutputStream dos) {
         this.s = s;
         this.dis = dis;
         this.dos = dos;

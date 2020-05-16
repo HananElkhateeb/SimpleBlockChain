@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class NodeSender {
     static ArrayList<String> ips = new ArrayList<>(Arrays.asList("5056", "5050"));
 
-    public static void main(String[] args) throws IOException {
+    public void send() throws IOException {
         for (String ip : ips) {
             try {
                 // getting localhost ip
