@@ -101,7 +101,7 @@ public class Controller implements IController {
         return false;
     }
 
-    private Transaction getTransaction(long txid) {
+    public Transaction getTransaction(long txid) {
         Block block = blockChain.traverseChain(txid).block;
         if (block != null)
             return block.getTransaction(txid+"");

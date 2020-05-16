@@ -1,10 +1,8 @@
 import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public class Transaction {
 	private long transactionID;
@@ -20,6 +18,7 @@ public class Transaction {
 		outputs = new ArrayList<>();
 		hash = "";
 	}
+	
 
 	public long getTransactionID() {
 		return transactionID;
@@ -88,25 +87,27 @@ public class Transaction {
 	}
 
 
-	//TODO not complete
+	//TODO testing
 	public boolean verify() {
 		//Check Signature
 		if(verifySignature() == false) {
 			System.out.println("#Transaction Signature failed to verify");
 			return false;
 		}
-
-		String prevTX = Long.toString(input.getPrevTX());
+		Controller controller = new Controller(); //TODO suppose to be singleton
+		
+		long prevTX = input.getPrevTX();
 		Short prevO = input.getPrevOutputIndex();
-		Block currBlock = new Block("prevHash"); //TODO current block
-		Transaction prevTx = currBlock.getTransaction(prevTX);
+	
+		Transaction prevTx = controller.getTransaction(prevTX);
 		TransactionOutput txIN = prevTx.getOutputs().get(prevO);
 
-		//TODO check same public key from previous transaction, need to get the transaction list
+		//check same public key from previous transaction
 		if(txIN.getReciever() != input.getSender()) {
 			System.out.println("#Transactions public keys don't match");
 			return false;
 		}
+		
 		//check credit is enough
 		float totalVal = this.computeTotal();
 		if(totalVal > txIN.getValue()) {
