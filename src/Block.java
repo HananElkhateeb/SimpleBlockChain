@@ -10,8 +10,8 @@ public class Block {
     private long timeStamp;
     private int nonce = -1;
     private String hash = "";
-    private Map<String, Transaction> transactions;
-    
+    private List<Transaction> transactions;
+
 
 
     public Block (String prevBlockHash){
@@ -55,18 +55,30 @@ public class Block {
 
     public void setMerkleTreeRoot(String merkleTreeRoot) { this.merkleTreeRoot = merkleTreeRoot; }
 
-    public Map<String, Transaction> getTransactions() {
+    public void setTransactions(List<Transaction> transactions) { this.transactions = transactions; }
+
+    public List<Transaction> getTransactions() {
         return transactions;
     }
 
     public Transaction getTransaction(String txid) {
-        return transactions.get(txid);
+        for (Transaction transaction : transactions) {
+            String tx = transaction.getTransactionID()+"";
+            if (tx.equals(txid))
+                return transaction;
+        }
+        return null;
     }
 
-    public void addTransaction(Transaction tx) {
-        transactions.put(Long.toString(tx.getTransactionID()), tx);
-    }
+    public void addTransaction(Transaction tx) { transactions.add(tx); }
 
+    public boolean containTransaction(long txid) {
+        for (Transaction transaction:transactions){
+            if (transaction.getTransactionID() == txid)
+                return true;
+        }
+        return false;
+    }
     public String calculateMerkleTreeRoot() {
         return Utils.calculateMerkleTreeRoot(transactions);
     }
