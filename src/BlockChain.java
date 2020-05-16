@@ -59,4 +59,16 @@ public class BlockChain {
         genesisBlock.setHash(genesisBlock.calculateBlockHash());
         return genesisBlock;
     }
+
+    public BlockChain traverseChain (long txid){
+        if (block.containTransaction(txid))
+            return this;
+        BlockChain current = null;
+        for (BlockChain child : blockChain) {
+            current = child.traverseChain(txid);
+            if (current != null)
+                break;
+        }
+        return current;
+    }
 }

@@ -72,6 +72,13 @@ public class Block {
 
     public void addTransaction(Transaction tx) { transactions.add(tx); }
 
+    public boolean containTransaction(long txid) {
+        for (Transaction transaction:transactions){
+            if (transaction.getTransactionID() == txid)
+                return true;
+        }
+        return false;
+    }
     public String calculateMerkleTreeRoot() {
         return Utils.calculateMerkleTreeRoot(transactions);
     }

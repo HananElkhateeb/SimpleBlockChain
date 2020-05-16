@@ -61,7 +61,7 @@ public class Controller implements IController {
     }
 
     @Override
-    public void getTransactions() {
+    public void getReceivedTransactions() {
         //TODO: received transactions from client and deserialized it to Transaction
         Transaction transaction = null;
         if (verifyTransaction(transaction)){
@@ -99,5 +99,12 @@ public class Controller implements IController {
         if (!coins.contains(coin))
             return true;
         return false;
+    }
+
+    private Transaction getTransaction(long txid) {
+        Block block = blockChain.traverseChain(txid).block;
+        if (block != null)
+            return block.getTransaction(txid+"");
+        return null;
     }
 }
