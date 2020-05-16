@@ -9,7 +9,8 @@ public class Utils {
 	/*
 	 * Applying sha256 encryption to a string input
 	 * Used in :
-	 * 
+	 * 		Transaction Hash
+	 * 		Block Hash
 	 * @param input -> string to apply sha256 on
 	 * @return hex value of the sha256 encryption
 	 * */
@@ -57,7 +58,7 @@ public class Utils {
 	 * verify digital signature for data using public key of sender
 	 * @param publicKey -> public key of sender
 	 * @param data -> input data
-	 * @param signature => digital signature to be verified
+	 * @param signature -> digital signature to be verified
 	 * @return true if valid, false o.w.
 	 * */
 	public static boolean verifyDigitalSign(PublicKey publicKey, String data, byte[] signature) {
