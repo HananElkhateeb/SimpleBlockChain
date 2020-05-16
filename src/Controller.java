@@ -10,11 +10,13 @@ public class Controller implements IController {
     private int difficulty = 7;
     private int type = 1;
     private Set<String> coins;
+    private Thread miningThread;
 
     public Controller(){
         blockChain = new BlockChain(blockChain.getGenesisBlock());
         receivedTransactions = new ArrayList<>();
         coins = new HashSet<>();
+        initiateThread();
     }
 
     @Override
@@ -29,15 +31,23 @@ public class Controller implements IController {
         Block block = null;
         if(!block.verifyHash() && !blockChain.addBlock(block))
             return;
-        //interrupt
+        miningThread.interrupt();
         handleCoins(block);
         List<Transaction> transactions = block.getTransactions();
         for (Transaction transaction:transactions){
             if (currentBlock.getTransactions().contains(transaction))
                 currentBlock.getTransactions().remove(transaction);
         }
-        //restart thread and continue mining
+        initiateThread();
 
+    }
+
+    private void initiateThread (){
+        miningThread = new Thread(() -> {
+            while (true)
+                mineBlock();
+        });
+        miningThread.start();
     }
 
     @Override
@@ -46,17 +56,23 @@ public class Controller implements IController {
             currentBlock = new Block(blockChain.getChainHead().block.getHash());
         List<Transaction> pendingTransactions = new ArrayList<>();
         int txCount = 0;
-        //TODO: handle when no received transactions while dealing with the miner threads to prevent infinite loop
         while ((new Date().getTime() - currentBlock.getTimeStamp() < 7000) && (txCount < currentBlock.getBlockThreshold())){
             if (!receivedTransactions.isEmpty()) {
                 pendingTransactions.add(receivedTransactions.remove(0));
                 txCount++;
+            } else {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
         currentBlock.setTransactions(pendingTransactions);
         currentBlock.setMerkleTreeRoot(currentBlock.calculateMerkleTreeRoot());
         currentBlock.setHash(currentBlock.calculateBlockHash());
         currentBlock.solveBlock(type, difficulty);
+        handleCoins(currentBlock);
         broadcastBlock();
     }
 
@@ -72,7 +88,6 @@ public class Controller implements IController {
     @Override
     public void broadcastBlock() {
         //TODO: .......
-        handleCoins(currentBlock);
         currentBlock = null;
     }
 
