@@ -4,6 +4,7 @@ import java.util.List;
 public class BlockChain {
     public Block block;
     public List<BlockChain> blockChain = new LinkedList<>();
+    private static Block genesisBlock;
 
     public BlockChain(Block block){
         this.block = block;
@@ -49,5 +50,13 @@ public class BlockChain {
         }
 
         return max + 1;
+    }
+
+    public static Block getGenesisBlock () {
+        if (genesisBlock != null)
+            return genesisBlock;
+        genesisBlock = new Block("0");
+        genesisBlock.setHash(genesisBlock.calculateBlockHash());
+        return genesisBlock;
     }
 }

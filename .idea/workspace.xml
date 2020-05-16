@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="37bb6234-b2d7-4aa4-aed3-41d50ffd4071" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1brh0c3NEgwypZWU5RwwVlTz4Q9" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../DS/SimpleBlockChain" />
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="37bb6234-b2d7-4aa4-aed3-41d50ffd4071" name="Default Changelist" comment="" />
+      <created>1589395897143</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1589395897143</updated>
+      <workItem from="1589395901997" duration="11609000" />
+      <workItem from="1589513890157" duration="21632000" />
+      <workItem from="1589589854296" duration="1354000" />
+    </task>
+    <task id="LOCAL-00001" summary=" Initial Commit">
+      <created>1589415620546</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1589415620546</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Basic Block and BlockChain functions.">
+      <created>1589568127138</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1589568127138</updated>
+    </task>
+    <task id="LOCAL-00003" summary="push structure.">
+      <created>1589590795348</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1589590795348</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value=" Initial Commit" />
+    <MESSAGE value="Basic Block and BlockChain functions." />
+    <MESSAGE value="push structure." />
+    <option name="LAST_COMMIT_MESSAGE" value="push structure." />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="801" y="239" width="374" height="626" key="#com.intellij.ide.util.MemberChooser" timestamp="1589578553889">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="801" y="239" width="374" height="626" key="#com.intellij.ide.util.MemberChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1589578553889" />
+    <state x="207" y="180" width="860" height="807" key="CommitChangelistDialog2" timestamp="1589590795219">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="207" y="180" width="860" height="807" key="CommitChangelistDialog2/67.27.1853.1053@67.27.1853.1053" timestamp="1589590795219" />
+    <state x="776" y="310" width="424" height="484" key="FileChooserDialogImpl" timestamp="1589590433032">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="776" y="310" width="424" height="484" key="FileChooserDialogImpl/67.27.1853.1053@67.27.1853.1053" timestamp="1589590433032" />
+    <state x="356" y="447" width="548" height="210" key="Github.ShareDialog" timestamp="1589415731070">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="356" y="447" width="548" height="210" key="Github.ShareDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1589415731070" />
+    <state x="133" y="288" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1589590879200">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="133" y="288" width="800" height="528" key="Vcs.Push.Dialog.v2/67.27.1853.1053@67.27.1853.1053" timestamp="1589590879200" />
+    <state x="157" y="347" width="736" height="413" key="git4idea.merge.GitPullDialog" timestamp="1589513924575">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="157" y="347" width="736" height="413" key="git4idea.merge.GitPullDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1589513924575" />
+  </component>
+</project>
