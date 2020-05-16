@@ -1,26 +1,24 @@
 package parsing.messages.payloads;
 
-import parsing.messages.payloads.types.PayloadTypes;
-import parsing.messages.payloads.types.PublicKeyPayload;
-import parsing.messages.payloads.types.TransactionPayload;
-import parsing.messages.payloads.types.VotePayload;
+import parsing.messages.payloads.types.*;
 
 public class PayloadFactory {
 
-    public Payload getPayload(String payloadType){
+    public Payload getPayload(PayloadTypes payloadType){
         if(payloadType == null){ return null; }
 
-        if(payloadType.equalsIgnoreCase(PayloadTypes.VOTE_PAYLOAD.toString())) {
-            return new VotePayload();
+        switch (payloadType) {
+            case VOTE_PAYLOAD:
+                return new VotePayload();
+            case GET_PEERS_PAYLOAD:
+                return new GetPeersPayload();
+            case PEER_ACK_PAYLOAD:
+                return new PeerAckPayload();
+            case BLOCK_PAYLOAD:
+                return new BlockPayload();
+            default:
+                return null;
         }
-        else if(payloadType.equalsIgnoreCase(PayloadTypes.PUBLIC_KEY_PAYLOAD.toString())) {
-            return new PublicKeyPayload();
-        }
-        else if(payloadType.equalsIgnoreCase(PayloadTypes.TRANSACTION_PAYLOAD.toString())) {
-            return new TransactionPayload();
-        }
-        else {
-            return null;
-        }
+
     }
 }

@@ -1,23 +1,24 @@
 package parsing.messages;
 
-import parsing.messages.types.MessagesTypes;
-import parsing.messages.types.PublicKeyMessage;
-import parsing.messages.types.TransactionMessage;
-import parsing.messages.types.VoteMessage;
+import parsing.messages.types.*;
 
 public class MessageFactory {
 
-    public Message getMessage(String messageType){
+    public IMessage getMessage(MessagesTypes messageType){
         if(messageType == null){
             return null;
         }
-        if(messageType.equalsIgnoreCase(MessagesTypes.VOTE_MESSAGE.toString()))
-            return new VoteMessage();
-        else if(messageType.equalsIgnoreCase(MessagesTypes.PUBLIC_KEY_MESSAGE.toString()))
-            return new PublicKeyMessage();
-        else if(messageType.equalsIgnoreCase(MessagesTypes.TRANSACTION_MESSAGE.toString()))
-            return new TransactionMessage();
-        else
-            return null;
+        switch (messageType) {
+            case VOTE_MESSAGE:
+                return new VoteMessage();
+            case GET_PEERS_MESSAGE:
+                return new GetPeersMessage();
+            case PEER_ACK_MESSAGE:
+                return new PeerAckMessage();
+            case BLOCK_MESSAGE:
+                return new BlockMessage();
+            default:
+                return null;
+        }
     }
 }

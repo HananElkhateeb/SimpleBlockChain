@@ -1,5 +1,5 @@
 package parsing.messages.payloads.types;
 
 public enum PayloadTypes {
-    PUBLIC_KEY_PAYLOAD, VOTE_PAYLOAD, TRANSACTION_PAYLOAD;
+    GET_PEERS_PAYLOAD, PEER_ACK_PAYLOAD, VOTE_PAYLOAD, BLOCK_PAYLOAD;
 }

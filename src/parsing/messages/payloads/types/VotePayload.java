@@ -3,6 +3,9 @@ package parsing.messages.payloads.types;
 import parsing.messages.payloads.Payload;
 
 public class VotePayload implements Payload {
+
+    public VotePayload() {}
+
     private int clientId;
     private boolean voting;
 

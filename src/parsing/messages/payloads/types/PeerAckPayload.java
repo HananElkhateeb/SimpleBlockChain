@@ -2,7 +2,10 @@ package parsing.messages.payloads.types;
 
 import parsing.messages.payloads.Payload;
 
-public class PublicKeyPayload implements Payload {
+public class PeerAckPayload implements Payload {
+
+    public PeerAckPayload() {}
+
     private int clientId;
     private String publicKey;
 

@@ -1,9 +1,9 @@
 package parsing.messages.types;
 
-import parsing.messages.Message;
+import parsing.messages.IMessage;
 import parsing.messages.payloads.Payload;
 
-public class VoteMessage implements Message {
+public class VoteMessage implements IMessage {
 
     public VoteMessage() {}
 
@@ -16,17 +16,17 @@ public class VoteMessage implements Message {
     }
 
     @Override
-    public Payload getMessagePayload() {
+    public Object getMessagePayload() {
         return this.payload;
     }
 
     @Override
-    public void setMessageType(MessagesTypes messageType) {
+    public void setMessageType(String messageType) {
 
     }
 
     @Override
-    public void setMessagePayload(Payload messagePayload) {
+    public void setMessagePayload(Object messagePayload) {
 
     }
 }

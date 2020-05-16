@@ -1,30 +1,32 @@
-package parsing.messages;
+package parsing.messages.types;
 
+import parsing.messages.IMessage;
 import parsing.messages.payloads.Payload;
 
-public class Message implements IMessage {
+public class GetPeersMessage implements IMessage {
 
-    public String messageType;
-    public Object payload;
+    public GetPeersMessage() {}
 
+    private String messageType;
+    private Payload payload;
+
+    @Override
     public String getMessageType() {
-        return this.messageType;
+        return null;
     }
 
     @Override
     public Object getMessagePayload() {
-        return this.payload;
+        return null;
     }
 
     @Override
     public void setMessageType(String messageType) {
-        this.messageType = messageType;
-    }
 
+    }
 
     @Override
     public void setMessagePayload(Object messagePayload) {
-        this.payload = messagePayload;
-    }
 
+    }
 }
