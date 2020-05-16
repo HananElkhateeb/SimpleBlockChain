@@ -24,8 +24,8 @@ public class Controller implements IController {
 
     @Override
     public void receiveBlock() {
-        //TODO: handle received blocks from network and parse it to Block object
-        //TODO: create threads for mining and interrupt the other miners when block is found
+        //TODO: handle received blocks from network and parse it to Block object.
+        //TODO: create threads for mining and interrupt the other miners when block is found.
         Block block = null;
         if(!block.verifyHash() && !blockChain.addBlock(block))
             return;
