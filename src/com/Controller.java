@@ -107,8 +107,7 @@ public class Controller implements IController {
     @Override
     public void broadcastBlock() throws IOException {
         NodeSender nodeSender = new NodeSender();
-        MessageFactory messageFactory = new MessageFactory();
-        IMessage blockMessage = messageFactory.getMessage(MessagesTypes.BLOCK_MESSAGE);
+        Message blockMessage = new Message();
         PayloadFactory payloadFactory = new PayloadFactory();
         BlockPayload blockPayload = (BlockPayload) payloadFactory.getPayload(PayloadTypes.BLOCK_PAYLOAD);
 
