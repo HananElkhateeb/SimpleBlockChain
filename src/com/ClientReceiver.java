@@ -10,9 +10,17 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 // Network Server class
 public class ClientReceiver {
@@ -70,29 +78,46 @@ class ClientReceiverHandler extends Thread {
         String toreturn;
         int clientID = 1;
         Client client = new Client(clientID);
+        client.generateKeys();
         while (true) {
             try {
 
                 // receive the answer from client
                 received = dis.readUTF();
 
-
-
-                if (received  == "Done"){
-                    client.getTransactions("ay 7aga");
+                if (received.equals("Done")){
+                    client.getTransactions("/home/karim/IdeaProjects/SimpleBlockChain/src/com/resources/txdataset_v2.txt");
+                    dos.writeUTF("OK");
+//                } else {
+//                    dos.writeUTF("Client "+ clientID+ "Failed to get transactions");
+                } else if (received.equals("GetKey")){
+                    System.out.println("kkkkkkkkkkkkkk> "+client.getPublicKey());
+                    toreturn = ""+clientID+"#&"+Base64.getEncoder().encodeToString(client.getPublicKey().getEncoded());
+                    dos.writeUTF(toreturn);
                 } else {
-                    dos.writeUTF("Client "+ clientID+ "Failed to get transactions");
+                    Map<Integer, PublicKey> nodes = new HashMap<>();
+                    String[] clientsInfo = received.split("!");
+                    for(String clientInfoStr: clientsInfo){
+                        String[] clientInfo = clientInfoStr.split("#&");
+                        KeyFactory factory = KeyFactory.getInstance("EC");
+                        int id = Integer.parseInt(clientInfo[0]);
+                        System.out.println("+++++++++++++++Pub "+ clientInfo[1]);
+                        PublicKey pub = (PublicKey) factory.generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(clientInfo[1])));
+                        nodes.put(id,pub);
+                        client.setNodes(nodes);
+                    }
+                    dos.writeUTF("OK");
                 }
                 this.s.close();
                 System.out.println("Connection closed");
                 break;
-            } catch (IOException e) {
+            } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException e) {
                 e.printStackTrace();
             }
         }
 
         try {
-            // closing resources
+            // closing com.resources
             this.dis.close();
             this.dos.close();
 

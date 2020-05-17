@@ -124,7 +124,7 @@ class MinerReceiverHandler extends Thread {
         }
 
         try {
-            // closing resources
+            // closing com.resources
             this.dis.close();
             this.dos.close();
 

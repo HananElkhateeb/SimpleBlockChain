@@ -18,6 +18,7 @@ import java.util.Map;
 public class Client implements IClient {
 	private PublicKey publicKey;
 	private PrivateKey privateKey;
+
 	private Map<Integer, PublicKey> nodes;
 	private int clientID;//TODO how to set IDs ?
  
@@ -120,4 +121,10 @@ public class Client implements IClient {
 		nodes.put(id, publicKey);
 		return true;
 	}
+
+	public void setNodes(Map<Integer, PublicKey> nodes) {
+		this.nodes = nodes;
+	}
+
+
 }
