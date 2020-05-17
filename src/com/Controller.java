@@ -83,7 +83,7 @@ public class Controller implements IController {
                 }
             }
         }
-        //TODO: nonce-size
+
         currentBlock.setTransactions(pendingTransactions);
         currentBlock.setMerkleTreeRoot(currentBlock.calculateMerkleTreeRoot());
         currentBlock.setHash(currentBlock.calculateBlockHash());
@@ -107,12 +107,14 @@ public class Controller implements IController {
         IMessage blockMessage = messageFactory.getMessage(MessagesTypes.BLOCK_MESSAGE);
         PayloadFactory payloadFactory = new PayloadFactory();
         BlockPayload blockPayload = (BlockPayload) payloadFactory.getPayload(PayloadTypes.BLOCK_PAYLOAD);
+
         blockPayload.setHash(currentBlock.getHash());
         blockPayload.setMerkleTreeRoot(currentBlock.getMerkleTreeRoot());
         blockPayload.setTimeStamp(currentBlock.getTimeStamp());
         blockPayload.setPrevBlockHash(currentBlock.getPrevBlockHash());
         blockPayload.setTransactions(currentBlock.getTransactions());
         blockMessage.setMessagePayload(blockPayload);
+
         blockMessage.setMessageType(MessagesTypes.BLOCK_MESSAGE.toString());
         Parser parser = new Parser();
         String message = parser.serializeMessage(blockMessage);

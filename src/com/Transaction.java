@@ -12,6 +12,7 @@ public class Transaction {
 	private List<TransactionOutput> outputs;
 	private String hash;
 	public byte[] signature;
+	boolean initialTransaction;
 
 
 	public Transaction(){
@@ -52,6 +53,14 @@ public class Transaction {
 
 	public void setHash(String hash) {
 		this.hash = hash;
+	}
+
+	public boolean isInitialTransaction() {
+		return initialTransaction;
+	}
+
+	public void setInitialTransaction(boolean initialTransaction) {
+		this.initialTransaction = initialTransaction;
 	}
 
 	public void generateSignature(PrivateKey privateKey){
