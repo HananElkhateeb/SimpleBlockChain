@@ -95,8 +95,12 @@ public class Controller implements IController {
     @Override
     public void getReceivedTransactions(Transaction t) {
         Transaction transaction = t;
-        if (verifyTransaction(transaction)){
+        if(t.isInitialTransaction()){
             receivedTransactions.add(transaction);
+        } else {
+            if (verifyTransaction(transaction)){
+                receivedTransactions.add(transaction);
+            }
         }
     }
 
@@ -140,8 +144,6 @@ public class Controller implements IController {
     }
 
     private boolean checkDoubleSpends (Transaction transaction){
-        if (transaction.isInitialTransaction())
-            return false;
         TransactionInput input = transaction.getInput();
         String coin = input.getPrevTX() + " " + input.getPrevOutputIndex();
         if (!coins.contains(coin))
