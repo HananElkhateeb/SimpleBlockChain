@@ -1,5 +1,10 @@
 package com;
 
+import com.parsing.Parser;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
 import java.util.Map;
@@ -10,11 +15,29 @@ public class Client implements IClient {
 	private Map<String, PublicKey> nodes;
 
     @Override
-    public void getTransactions(String fileName) {
-
+    public void getTransactions(String filePath) {
+		Parser parser = new Parser();
+		BufferedReader reader;
+		try {
+			reader = new BufferedReader(new FileReader(filePath));
+			String line = reader.readLine();
+			while (line != null) {
+				Transaction transaction = parser.parseInputLineTransaction(line);
+				transaction = fillSecurityFields(transaction);
+				line = reader.readLine();
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 
-    @Override
+	private Transaction fillSecurityFields(Transaction transaction) {
+    	//todo Sohaila or Hanan, fill in the public keys and hashes for the Transaction input and output.
+    	return transaction;
+	}
+
+	@Override
     public void generateKeys() {
     	try {
 			KeyPairGenerator keyGen = KeyPairGenerator.getInstance("ECDSA","BC");

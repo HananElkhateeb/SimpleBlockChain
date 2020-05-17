@@ -2,6 +2,7 @@ package com;
 
 import com.parsing.Parser;
 import com.parsing.messages.IMessage;
+import com.parsing.messages.Message;
 import com.parsing.messages.payloads.types.BlockPayload;
 import com.parsing.messages.MessagesTypes;
 
@@ -88,7 +89,7 @@ class MinerReceiverHandler extends Thread {
 
                 // write on output stream based on the
                 // answer from the client
-                IMessage receivedMsg = new Parser().deSerializeMessage(received);
+                Message receivedMsg = new Parser().deSerializeMessage(received);
                 if (receivedMsg.getMessageType().equals(MessagesTypes.BLOCK_MESSAGE.toString())){
                     BlockPayload blockPayload = (BlockPayload) receivedMsg.getMessagePayload();
                     Block b = new Block(blockPayload.getPrevBlockHash());
