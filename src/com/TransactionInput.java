@@ -5,14 +5,14 @@ import java.security.PublicKey;
 public class TransactionInput {
     private long prevTX;
     private short prevOutputIndex;
-    private PublicKey sender;
+    private String sender;
     private int input;
 
-    public PublicKey getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(PublicKey sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
     public long getPrevTX() {

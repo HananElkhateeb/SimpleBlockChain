@@ -16,6 +16,8 @@ public class PayloadFactory {
                 return new PeerAckPayload();
             case BLOCK_PAYLOAD:
                 return new BlockPayload();
+            case TRANSACTION_PAYLOAD:
+                return new TransactionPayload();
             default:
                 return null;
         }

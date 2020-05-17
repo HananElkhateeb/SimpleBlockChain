@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ public class Client implements IClient {
 	private PublicKey publicKey;
 	private PrivateKey privateKey;
 	private Map<Integer, PublicKey> nodes;
-	private int clientID;
+	private int clientID;//TODO how to set IDs ?
  
     @Override
     public void getTransactions(String filePath) {
@@ -40,13 +41,13 @@ public class Client implements IClient {
 	private Transaction fillSecurityFields(Transaction transaction) {
 		String hash = transaction.calculateHash();
 		transaction.setHash(hash);
-		transaction.getInput().setSender(this.publicKey);
+		transaction.getInput().setSender(Base64.getEncoder().encodeToString(this.publicKey.getEncoded()));
 		transaction.generateSignature(this.privateKey);
 		List<TransactionOutput> outputs = transaction.getOutputs();
 		for(TransactionOutput txo : outputs) {
 			//TODO if client does not exist
 			Integer clientID = txo.getOutputIndex();
-			txo.setReciever(nodes.get(clientID));
+			txo.setReciever(Base64.getEncoder().encodeToString(nodes.get(clientID).getEncoded()));
 		}
     	return transaction;
 	}

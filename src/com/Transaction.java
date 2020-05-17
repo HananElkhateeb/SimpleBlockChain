@@ -1,6 +1,9 @@
 package com;
 
+import java.security.KeyFactory;
 import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
@@ -57,6 +60,10 @@ public class Transaction {
 	public void setHash(String hash) {
 		this.hash = hash;
 	}
+	
+	public byte[] getSignature() {
+		return this.signature;
+	}
 
 	public boolean isInitialTransaction() {
 		return initialTransaction;
@@ -67,31 +74,47 @@ public class Transaction {
 	}
 
 	public void generateSignature(PrivateKey privateKey){
-		String senderPubKeySTR = Base64.getEncoder().encodeToString(input.getSender().getEncoded());
+		//String senderPubKeySTR = Base64.getEncoder().encodeToString(input.getSender().getEncoded());
+		String senderPubKeySTR = input.getSender();
 		StringBuffer outputSTR = new StringBuffer();
 		for(TransactionOutput txo : outputs) {
-			outputSTR.append(Base64.getEncoder().encodeToString(txo.getReciever().getEncoded()));
+			//outputSTR.append(Base64.getEncoder().encodeToString(txo.getReciever().getEncoded()));
+			outputSTR.append(txo.getReciever());
+
 			outputSTR.append(Float.toString(txo.getValue()));
 		}
 		signature = Utils.digialSignature(privateKey, senderPubKeySTR+outputSTR.toString());
 	}
 
 	public boolean verifySignature(){
-		String senderPubKeySTR = Base64.getEncoder().encodeToString(input.getSender().getEncoded());
+		try {
+		//String senderPubKeySTR = Base64.getEncoder().encodeToString(input.getSender().getEncoded());
+		String senderPubKeySTR = input.getSender();
 		StringBuffer outputSTR = new StringBuffer();
 		for(TransactionOutput txo : outputs) {
-			outputSTR.append(Base64.getEncoder().encodeToString(txo.getReciever().getEncoded()));
+			//outputSTR.append(Base64.getEncoder().encodeToString(txo.getReciever().getEncoded()));
+			outputSTR.append(txo.getReciever());
+
 			outputSTR.append(Float.toString(txo.getValue()));
 		}
 		String data = senderPubKeySTR+outputSTR.toString();
-		return Utils.verifyDigitalSign(input.getSender(), data, signature);
+		KeyFactory factory;
+		factory = KeyFactory.getInstance("EC");
+		PublicKey public_key = (PublicKey) factory.generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(input.getSender())));
+		return Utils.verifyDigitalSign(public_key, data, signature);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return false;
 	}
 
 	public String calculateHash(){
-		String senderPubKeySTR = Base64.getEncoder().encodeToString(input.getSender().getEncoded());
+		String senderPubKeySTR = input.getSender();
 		StringBuffer outputSTR = new StringBuffer();
 		for(TransactionOutput txo : outputs) {
-			outputSTR.append(Base64.getEncoder().encodeToString(txo.getReciever().getEncoded()));
+			outputSTR.append(txo.getReciever());
 			outputSTR.append(Float.toString(txo.getValue()));
 		}
 		String data = senderPubKeySTR+outputSTR.toString();
@@ -114,6 +137,7 @@ public class Transaction {
 		TransactionOutput txIN = prevTx.getOutputs().get(prevO);
 
 		//check same public key from previous transaction
+	
 		if(txIN.getReciever() != input.getSender()) {
 			System.out.println("#Transactions public keys don't match");
 			return false;

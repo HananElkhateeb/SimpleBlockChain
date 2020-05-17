@@ -5,7 +5,7 @@ import java.security.PublicKey;
 public class TransactionOutput {
     private int outputIndex;
     private float value;
-    private PublicKey reciever;
+    private String reciever;
 
     public int getOutputIndex() {
         return outputIndex;
@@ -23,11 +23,11 @@ public class TransactionOutput {
         this.value = value;
     }
 
-    public PublicKey getReciever() {
+    public String getReciever() {
         return reciever;
     }
 
-    public void setReciever(PublicKey reciever) {
+    public void setReciever(String reciever) {
         this.reciever = reciever;
     }
 }

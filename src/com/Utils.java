@@ -66,7 +66,7 @@ public class Utils {
 	 * */
 	public static boolean verifyDigitalSign(PublicKey publicKey, String data, byte[] signature) {
 		try {
-			Signature dsVerify = Signature.getInstance("ECDSA", "BC");
+			Signature dsVerify = Signature.getInstance("SHA256withECDSA");
 			dsVerify.initVerify(publicKey);
 			dsVerify.update(data.getBytes());
 			return dsVerify.verify(signature);
