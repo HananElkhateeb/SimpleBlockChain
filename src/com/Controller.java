@@ -138,8 +138,10 @@ public class Controller implements IController {
             }
         }
     }
-    //TODO: handling the 50 initial transactions
+
     private boolean checkDoubleSpends (Transaction transaction){
+        if (transaction.isInitialTransaction())
+            return false;
         TransactionInput input = transaction.getInput();
         String coin = input.getPrevTX() + " " + input.getPrevOutputIndex();
         if (!coins.contains(coin))
