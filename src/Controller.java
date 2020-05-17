@@ -9,7 +9,7 @@ public class Controller implements IController {
     private Block currentBlock;
     private int difficulty = 7;
     private int type = 1;
-    private Set<String> coins;
+    private Set<String> coins;//hash set that has prev transaction with its output indes, can be spent
     private Thread miningThread;
 
     public Controller(){

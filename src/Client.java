@@ -6,7 +6,7 @@ public class Client implements IClient {
 	private PublicKey publicKey;
 	private PrivateKey privateKey;
 	private Map<String, PublicKey> nodes;
-
+ 
     @Override
     public void getTransactions(String fileName) {
 

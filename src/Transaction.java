@@ -9,10 +9,12 @@ public class Transaction {
 	private TransactionInput input;
 	private List<TransactionOutput> outputs;
 	private String hash;
+	private float leftover;
 	public byte[] signature;
 
 
 	public Transaction(){
+		leftover = -1;
 		transactionID = -1;
 		input = null;
 		outputs = new ArrayList<>();
@@ -88,12 +90,14 @@ public class Transaction {
 
 
 	//TODO testing
+	//Maybe send instance of class as parameter ?
 	public boolean verify() {
 		//Check Signature
 		if(verifySignature() == false) {
 			System.out.println("#Transaction Signature failed to verify");
 			return false;
 		}
+		//TODO which list ?		
 		Controller controller = new Controller(); //TODO suppose to be singleton
 		
 		long prevTX = input.getPrevTX();
@@ -116,6 +120,22 @@ public class Transaction {
 		}
 
 		return true;
+	}
+	
+	public float getLeftOver() {
+		if(leftover != -1)
+			return leftover;
+		float total = this.computeTotal();
+		long prevTX = input.getPrevTX();
+		Short prevO = input.getPrevOutputIndex();
+		Controller controller = new Controller(); //TODO which list?
+
+		Transaction prevTx = controller.getTransaction(prevTX);
+		TransactionOutput txIN = prevTx.getOutputs().get(prevO);
+				
+		float wallet = txIN.getValue();
+		this.leftover = wallet - total;
+		return leftover;
 	}
 
 	private float computeTotal() {
