@@ -83,35 +83,36 @@ class MinerReceiverHandler extends Thread {
 
                 // write on output stream based on the
                 // answer from the client
-                Message receivedMsg = new Parser().deSerializeMessage(received);
-                if (receivedMsg.getMessageType().equals(MessagesTypes.BLOCK_MESSAGE.toString())){
-                    BlockPayload blockPayload = (BlockPayload) receivedMsg.getMessagePayload();
+                if (!received.equals("Done")){
+                    Message receivedMsg = new Parser().deSerializeMessage(received);
+                    if (receivedMsg.getMessageType().equals(MessagesTypes.BLOCK_MESSAGE.toString())){
+                        BlockPayload blockPayload = (BlockPayload) receivedMsg.getMessagePayload();
 
-                    Block b = new Block(blockPayload.getPrevBlockHash());
-                    b.setHash(blockPayload.getHash());
-                    b.setMerkleTreeRoot(blockPayload.getMerkleTreeRoot());
-                    b.setTimeStamp(blockPayload.getTimeStamp());
-                    b.setPrevBlockHash(blockPayload.getPrevBlockHash());
-                    b.setTransactions(blockPayload.getTransactions());
+                        Block b = new Block(blockPayload.getPrevBlockHash());
+                        b.setHash(blockPayload.getHash());
+                        b.setMerkleTreeRoot(blockPayload.getMerkleTreeRoot());
+                        b.setTimeStamp(blockPayload.getTimeStamp());
+                        b.setPrevBlockHash(blockPayload.getPrevBlockHash());
+                        b.setTransactions(blockPayload.getTransactions());
 
-                    controller.receiveBlock(b);
-                } else if (receivedMsg.getMessageType().equals(MessagesTypes.TRANSACTION_MESSAGE.toString())){
-                    TransactionPayload transactionPayload = (TransactionPayload) receivedMsg.getMessagePayload();
+                        controller.receiveBlock(b);
+                    } else if (receivedMsg.getMessageType().equals(MessagesTypes.TRANSACTION_MESSAGE.toString())){
+                        TransactionPayload transactionPayload = (TransactionPayload) receivedMsg.getMessagePayload();
 
-                    Transaction t = new Transaction();
-                    t.setInput(transactionPayload.getInput());
-                    t.setOutputs(transactionPayload.getOutputs());
-                    t.setTransactionID(transactionPayload.getTransactionID());
-                    t.setHash(transactionPayload.getHash());
-                    t.setInitialTransaction(transactionPayload.isInitialTransaction());
-                    t.setSignature(transactionPayload.getSignature());
+                        Transaction t = new Transaction();
+                        t.setInput(transactionPayload.getInput());
+                        t.setOutputs(transactionPayload.getOutputs());
+                        t.setTransactionID(transactionPayload.getTransactionID());
+                        t.setHash(transactionPayload.getHash());
+                        t.setInitialTransaction(transactionPayload.isInitialTransaction());
+                        t.setSignature(transactionPayload.getSignature());
 
-                    controller.getReceivedTransactions(t);
+                        controller.getReceivedTransactions(t);
 
-                } else {
-                    dos.writeUTF("Invalid Message Type!");
+                    } else {
+                        dos.writeUTF("Invalid Message Type!");
+                    }
                 }
-
                 System.out.println("com.Client " + this.s + " sends exit...");
                 System.out.println("Closing this connection.");
                 this.s.close();
