@@ -12,7 +12,7 @@ import java.util.Scanner;
 // com.Client class
 public class NodeSender {
     static ArrayList<String> ips = new ArrayList<>(Arrays.asList("5056", "5050"));
-
+//TODO: send message parameter or it is just received.
     public void send(String meassage) throws IOException {
         for (String ip : ips) {
             try {

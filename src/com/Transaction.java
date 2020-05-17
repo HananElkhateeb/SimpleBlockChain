@@ -15,7 +15,7 @@ public class Transaction {
 	private List<TransactionOutput> outputs;
 	private String hash;
 	private float leftover;
-	public byte[] signature;
+	private byte[] signature;
 	boolean initialTransaction;
 
 
@@ -60,7 +60,11 @@ public class Transaction {
 	public void setHash(String hash) {
 		this.hash = hash;
 	}
-	
+
+	public void setSignature(byte[] signature) {
+		this.signature = signature;
+	}
+
 	public byte[] getSignature() {
 		return this.signature;
 	}

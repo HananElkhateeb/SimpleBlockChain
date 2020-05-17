@@ -16,7 +16,7 @@ public class Controller implements IController {
     private BlockChain blockChain;
     private List<Transaction> receivedTransactions;
     private Block currentBlock;
-    private int difficulty = 7;
+    private int difficulty = 3;
     private int type = 1;
     private Set<String> coins;//hash set that has prev transaction with its output indes, can be spent
     private Thread miningThread;
@@ -102,6 +102,7 @@ public class Controller implements IController {
     }
 
     @Override
+    //TODO: while loop to send to all nodes
     public void broadcastBlock() throws IOException {
         NodeSender nodeSender = new NodeSender();
         Message blockMessage = new Message();

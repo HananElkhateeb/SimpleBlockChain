@@ -1,5 +1,10 @@
 package com;
 
+import com.parsing.Parser;
+import com.parsing.messages.Message;
+import com.parsing.messages.MessagesTypes;
+import com.parsing.messages.payloads.types.TransactionPayload;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -18,8 +23,6 @@ public class ClientReceiver {
         // running infinite loop for getting
         // client request
         while (true) {
-            Client client = new Client();
-            client.getTransactions("ay 7aga");
             Socket s = null;
 
             try {
@@ -68,37 +71,35 @@ class ClientReceiverHandler extends Thread {
     public void run() {
         String received;
         String toreturn;
+        Client client = new Client();
         while (true) {
             try {
 
-                // Ask user what he wants
-                dos.writeUTF("What do you want?[Date | Time]..\n" +
-                        "Type Exit to terminate connection.");
+                client.getTransactions("ay 7aga");
 
                 // receive the answer from client
                 received = dis.readUTF();
 
-                // creating Date object
-                Date date = new Date();
+                Message receivedMsg = new Parser().deSerializeMessage(received);
 
-                // write on output stream based on the
-                // answer from the client
-                switch (received) {
+                if (receivedMsg.getMessageType().equals(MessagesTypes.TRANSACTION_MESSAGE.toString())){
+                    TransactionPayload transactionPayload = (TransactionPayload) receivedMsg.getMessagePayload();
 
-                    case "Date":
-                        toreturn = fordate.format(date);
-                        dos.writeUTF(toreturn);
-                        break;
+                    Transaction t = new Transaction();
+                    t.setInput(transactionPayload.getInput());
+                    t.setOutputs(transactionPayload.getOutputs());
+                    t.setTransactionID(transactionPayload.getTransactionID());
+                    t.setHash(transactionPayload.getHash());
+                    t.setInitialTransaction(transactionPayload.isInitialTransaction());
+                    t.setSignature(transactionPayload.getSignature());
 
-                    case "Time":
-                        toreturn = fortime.format(date);
-                        dos.writeUTF(toreturn);
-                        break;
+                    //TODO: ID/Port/PublicKey/privateKey hardcoded??
+                    //TODO:Node0 configuration
 
-                    default:
-                        dos.writeUTF("Invalid input");
-                        break;
+                } else {
+                    dos.writeUTF("Invalid Message Type!");
                 }
+
                 System.out.println("com.Client " + this.s + " sends exit...");
                 System.out.println("Closing this connection.");
                 this.s.close();

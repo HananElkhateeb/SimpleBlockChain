@@ -1,6 +1,11 @@
 package com;
 
 import com.parsing.Parser;
+import com.parsing.messages.Message;
+import com.parsing.messages.MessagesTypes;
+import com.parsing.messages.payloads.PayloadFactory;
+import com.parsing.messages.payloads.types.PayloadTypes;
+import com.parsing.messages.payloads.types.TransactionPayload;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -28,7 +33,7 @@ public class Client implements IClient {
 				Transaction transaction = parser.parseInputLineTransaction(line);
 				if (this.clientID == transaction.getInput().getInput()) {
 					transaction = fillSecurityFields(transaction);
-					broadcastTransaction();
+					broadcastTransaction(transaction);
 				}
 				line = reader.readLine();
 			}
@@ -72,8 +77,25 @@ public class Client implements IClient {
     }
 
     @Override
-    public void broadcastTransaction() {
+	//TODO: while loop to send to all nodes
+    public void broadcastTransaction(Transaction transaction) throws IOException {
+    	NodeSender nodeSender = new NodeSender();
+		Message transMessage = new Message();
+		PayloadFactory payloadFactory = new PayloadFactory();
+		TransactionPayload transactionPayload = (TransactionPayload) payloadFactory.getPayload(PayloadTypes.TRANSACTION_PAYLOAD);
 
+		transactionPayload.setInput(transaction.getInput());
+		transactionPayload.setOutputs(transaction.getOutputs());
+		transactionPayload.setHash(transaction.getHash());
+		transactionPayload.setSignature(transaction.getSignature());
+		transactionPayload.setTransactionID(transaction.getTransactionID());
+		transactionPayload.setInitialTransaction(transaction.isInitialTransaction());
+
+		transMessage.setMessagePayload(transactionPayload);
+		transMessage.setMessageType(MessagesTypes.TRANSACTION_MESSAGE.toString());
+		Parser parser = new Parser();
+		String message = parser.serializeMessage(transMessage);
+		nodeSender.send(message);
     }
 
 	@Override

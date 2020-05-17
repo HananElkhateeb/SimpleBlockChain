@@ -74,19 +74,12 @@ class MinerReceiverHandler extends Thread {
     public void run() {
         String received;
         String toreturn;
+        Controller controller = new Controller(); //moved from while loop
         while (true) {
             try {
-                Controller controller = new Controller();
-
-                // Ask user what he wants
-                dos.writeUTF("What do you want?[Date | Time]..\n" +
-                        "Type Exit to terminate connection.");
 
                 // receive the answer from client
                 received = dis.readUTF();
-
-                // creating Date object
-                Date date = new Date();
 
                 // write on output stream based on the
                 // answer from the client
@@ -109,6 +102,11 @@ class MinerReceiverHandler extends Thread {
                     t.setInput(transactionPayload.getInput());
                     t.setOutputs(transactionPayload.getOutputs());
                     t.setTransactionID(transactionPayload.getTransactionID());
+                    t.setHash(transactionPayload.getHash());
+                    t.setInitialTransaction(transactionPayload.isInitialTransaction());
+                    t.setSignature(transactionPayload.getSignature());
+
+                    controller.getReceivedTransactions(t);
 
                 } else {
                     dos.writeUTF("Invalid Message Type!");
