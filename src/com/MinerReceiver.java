@@ -5,6 +5,7 @@ import com.parsing.messages.IMessage;
 import com.parsing.messages.Message;
 import com.parsing.messages.payloads.types.BlockPayload;
 import com.parsing.messages.MessagesTypes;
+import com.parsing.messages.payloads.types.TransactionPayload;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -92,13 +93,23 @@ class MinerReceiverHandler extends Thread {
                 Message receivedMsg = new Parser().deSerializeMessage(received);
                 if (receivedMsg.getMessageType().equals(MessagesTypes.BLOCK_MESSAGE.toString())){
                     BlockPayload blockPayload = (BlockPayload) receivedMsg.getMessagePayload();
+
                     Block b = new Block(blockPayload.getPrevBlockHash());
                     b.setHash(blockPayload.getHash());
                     b.setMerkleTreeRoot(blockPayload.getMerkleTreeRoot());
                     b.setTimeStamp(blockPayload.getTimeStamp());
                     b.setPrevBlockHash(blockPayload.getPrevBlockHash());
                     b.setTransactions(blockPayload.getTransactions());
+
                     controller.receiveBlock(b);
+                } else if (receivedMsg.getMessageType().equals(MessagesTypes.TRANSACTION_MESSAGE.toString())){
+                    TransactionPayload transactionPayload = (TransactionPayload) receivedMsg.getMessagePayload();
+
+                    Transaction t = new Transaction();
+                    t.setInput(transactionPayload.getInput());
+                    t.setOutputs(transactionPayload.getOutputs());
+                    t.setTransactionID(transactionPayload.getTransactionID());
+
                 } else {
                     dos.writeUTF("Invalid Message Type!");
                 }
