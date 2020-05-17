@@ -1,11 +1,6 @@
 package com.parsing;
 
-import com.Transaction;
 import com.parsing.messages.IMessage;
-import com.parsing.messages.MessageFactory;
-import com.parsing.messages.payloads.IPayload;
-import com.parsing.messages.payloads.Payload;
-import com.parsing.messages.payloads.PayloadFactory;
 import com.parsing.messages.payloads.types.*;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -13,9 +8,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.parsing.messages.Message;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-import com.parsing.messages.types.MessagesTypes;
+import com.parsing.messages.MessagesTypes;
 
 
 public class Parser {

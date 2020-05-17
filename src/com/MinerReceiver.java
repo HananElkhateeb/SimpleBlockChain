@@ -3,7 +3,7 @@ package com;
 import com.parsing.Parser;
 import com.parsing.messages.IMessage;
 import com.parsing.messages.payloads.types.BlockPayload;
-import com.parsing.messages.types.MessagesTypes;
+import com.parsing.messages.MessagesTypes;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

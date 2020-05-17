@@ -1,14 +1,11 @@
 package com;
 
 import com.parsing.Parser;
-import com.parsing.messages.IMessage;
 import com.parsing.messages.Message;
-import com.parsing.messages.MessageFactory;
 import com.parsing.messages.payloads.PayloadFactory;
 import com.parsing.messages.payloads.types.BlockPayload;
 import com.parsing.messages.payloads.types.PayloadTypes;
-import com.parsing.messages.types.BlockMessage;
-import com.parsing.messages.types.MessagesTypes;
+import com.parsing.messages.MessagesTypes;
 
 import java.io.IOException;
 import java.util.*;
