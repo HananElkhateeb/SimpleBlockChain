@@ -6,6 +6,7 @@ public class TransactionInput {
     private long prevTX;
     private short prevOutputIndex;
     private PublicKey sender;
+    private int input;
 
     public PublicKey getSender() {
         return sender;
@@ -30,5 +31,12 @@ public class TransactionInput {
         this.prevOutputIndex = prevOutputIndex;
     }
 
-   
+
+    public int getInput() {
+        return input;
+    }
+
+    public void setInput(int input) {
+        this.input = input;
+    }
 }
