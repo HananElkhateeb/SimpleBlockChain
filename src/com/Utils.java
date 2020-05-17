@@ -46,7 +46,7 @@ public class Utils {
 		byte[] output = new byte[0];
 		try {
 			//ecdsa signature is used with bitcoin transactions
-			dsa = Signature.getInstance("ECDSA", "BC");
+			dsa = Signature.getInstance("SHA256withECDSA");
 			dsa.initSign(privateKey);
 			byte[] strByte = data.getBytes();
 			dsa.update(strByte);

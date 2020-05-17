@@ -50,11 +50,11 @@ public class Client implements IClient {
 	@Override
     public void generateKeys() {
     	try {
-			KeyPairGenerator keyGen = KeyPairGenerator.getInstance("ECDSA","BC");
+			KeyPairGenerator keyGen = KeyPairGenerator.getInstance("EC");
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-			ECGenParameterSpec ecSpec = new ECGenParameterSpec("prime192v1");
+			//ECGenParameterSpec ecSpec = new ECGenParameterSpec("prime192v1");
 
-			keyGen.initialize(ecSpec, random);   //256 bytes provides an acceptable security level
+			keyGen.initialize(256, random);   //256 bytes provides an acceptable security level
 			KeyPair keyPair = keyGen.generateKeyPair();
 
 			// set the public and private keys from the keyPair 	
