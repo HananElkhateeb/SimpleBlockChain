@@ -30,7 +30,7 @@ public class Controller implements IController {
 
     @Override
     public boolean verifyTransaction(Transaction tx) {
-        return tx.verify() && !checkDoubleSpends(tx);
+        return tx.verify(this) && !checkDoubleSpends(tx);
     }
 
     @Override

@@ -7,12 +7,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
+import java.util.List;
 import java.util.Map;
 
 public class Client implements IClient {
 	private PublicKey publicKey;
 	private PrivateKey privateKey;
-	private Map<String, PublicKey> nodes;
+	private Map<Integer, PublicKey> nodes;
  
     @Override
     public void getTransactions(String filePath) {
@@ -33,7 +34,16 @@ public class Client implements IClient {
     }
 
 	private Transaction fillSecurityFields(Transaction transaction) {
-    	//todo Sohaila or Hanan, fill in the public keys and hashes for the Transaction input and output.
+		String hash = transaction.calculateHash();
+		transaction.setHash(hash);
+		transaction.getInput().setSender(this.publicKey);
+		transaction.generateSignature(this.privateKey);
+		List<TransactionOutput> outputs = transaction.getOutputs();
+		for(TransactionOutput txo : outputs) {
+			//TODO if client does not exist
+			Integer clientID = txo.getOutputIndex();
+			txo.setReciever(nodes.get(clientID));
+		}
     	return transaction;
 	}
 
@@ -72,7 +82,7 @@ public class Client implements IClient {
 	}
 
 	@Override
-	public boolean addNewNode(String id, PublicKey publicKey) {
+	public boolean addNewNode(Integer id, PublicKey publicKey) {
 		if(nodes.containsKey(id)) {
 			if(nodes.get(id) == publicKey)
 				return false;

@@ -6,7 +6,7 @@ public interface IClient {
     void getTransactions(String fileName);
     void generateKeys();
     void broadcastTransaction();
-    boolean addNewNode(String id, PublicKey publicKey);
+    boolean addNewNode(Integer id, PublicKey publicKey);
 
     PublicKey getPublicKey();
     PrivateKey getPrivateKey();

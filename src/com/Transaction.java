@@ -101,16 +101,12 @@ public class Transaction {
 
 
 	//TODO testing
-	//Maybe send instance of class as parameter ?
-	public boolean verify() {
+	public boolean verify(Controller controller) {
 		//Check Signature
 		if(verifySignature() == false) {
 			System.out.println("#com.Transaction Signature failed to verify");
 			return false;
 		}
-		//TODO which list ?		
-		Controller controller = new Controller(); //TODO suppose to be singleton
-		
 		long prevTX = input.getPrevTX();
 		Short prevO = input.getPrevOutputIndex();
 	
