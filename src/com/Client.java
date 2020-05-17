@@ -14,6 +14,7 @@ public class Client implements IClient {
 	private PublicKey publicKey;
 	private PrivateKey privateKey;
 	private Map<Integer, PublicKey> nodes;
+	private int clientID;
  
     @Override
     public void getTransactions(String filePath) {
@@ -24,7 +25,10 @@ public class Client implements IClient {
 			String line = reader.readLine();
 			while (line != null) {
 				Transaction transaction = parser.parseInputLineTransaction(line);
-				transaction = fillSecurityFields(transaction);
+				if (this.clientID == transaction.getInput().getInput()) {
+					transaction = fillSecurityFields(transaction);
+					broadcastTransaction();
+				}
 				line = reader.readLine();
 			}
 			reader.close();
