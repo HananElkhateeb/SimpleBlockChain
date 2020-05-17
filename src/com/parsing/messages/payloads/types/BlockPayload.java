@@ -1,11 +1,12 @@
 package com.parsing.messages.payloads.types;
 
 import com.Transaction;
+import com.parsing.messages.payloads.IPayload;
 import com.parsing.messages.payloads.Payload;
 
 import java.util.List;
 
-public class BlockPayload implements Payload {
+public class BlockPayload extends Payload implements IPayload {
 
     private String prevBlockHash = "";
     private String merkleTreeRoot = "";

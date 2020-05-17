@@ -1,14 +1,15 @@
 package com.parsing.messages.types;
 
 import com.parsing.messages.IMessage;
-import com.parsing.messages.payloads.Payload;
+import com.parsing.messages.Message;
+import com.parsing.messages.payloads.IPayload;
 
-public class PeerAckMessage implements IMessage {
+public class PeerAckMessage extends Message implements IMessage {
 
     public PeerAckMessage() {}
 
     private String messageType;
-    private Payload payload;
+    private IPayload payload;
 
     @Override
     public String getMessageType() {

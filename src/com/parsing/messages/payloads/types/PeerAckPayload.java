@@ -1,8 +1,9 @@
 package com.parsing.messages.payloads.types;
 
+import com.parsing.messages.payloads.IPayload;
 import com.parsing.messages.payloads.Payload;
 
-public class PeerAckPayload implements Payload {
+public class PeerAckPayload extends Payload implements IPayload {
 
     public PeerAckPayload() {}
 

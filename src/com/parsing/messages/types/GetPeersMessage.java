@@ -1,14 +1,15 @@
 package com.parsing.messages.types;
 
 import com.parsing.messages.IMessage;
-import com.parsing.messages.payloads.Payload;
+import com.parsing.messages.Message;
+import com.parsing.messages.payloads.IPayload;
 
-public class GetPeersMessage implements IMessage {
+public class GetPeersMessage extends Message implements IMessage {
 
     public GetPeersMessage() {}
 
     private String messageType;
-    private Payload payload;
+    private IPayload payload;
 
     @Override
     public String getMessageType() {

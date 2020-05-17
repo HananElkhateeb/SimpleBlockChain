@@ -1,4 +1,4 @@
 package com.parsing.messages.payloads;
 
-public interface Payload {
+public class Payload implements IPayload {
 }

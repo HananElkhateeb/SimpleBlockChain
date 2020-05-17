@@ -1,17 +1,20 @@
 package com.parsing;
 
+import com.Transaction;
 import com.parsing.messages.IMessage;
+import com.parsing.messages.MessageFactory;
+import com.parsing.messages.payloads.IPayload;
+import com.parsing.messages.payloads.Payload;
+import com.parsing.messages.payloads.PayloadFactory;
+import com.parsing.messages.payloads.types.*;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import com.parsing.messages.Message;
-import com.parsing.messages.payloads.types.BlockPayload;
-import com.parsing.messages.payloads.types.GetPeersPayload;
-import com.parsing.messages.payloads.types.PeerAckPayload;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-import com.parsing.messages.payloads.types.VotePayload;
 import com.parsing.messages.types.MessagesTypes;
 
 
@@ -55,16 +58,22 @@ public class Parser {
         return receivedMessage;
     }
 
-//    public static void main(String[] args) {
-//        Message message = new Message();
-//        message.messageType = MessagesTypes.BLOCK_MESSAGE.toString();
-//        BlockPayload payload = new BlockPayload();
-//        payload.setInput(new ArrayList<>(Arrays.asList(1, 2, 3)));
-//        payload.setOutput(new ArrayList<>(Arrays.asList(4, 5, 6)));
-//        message.payload = payload;
+    public static void main(String[] args) {
+//        Message blockMessage = new Message();
+//        blockMessage.setMessageType(MessagesTypes.BLOCK_MESSAGE.toString());
+//
+//        PayloadFactory payloadFactory = new PayloadFactory();
+//        BlockPayload blockPayload = (BlockPayload) payloadFactory.getPayload(PayloadTypes.BLOCK_PAYLOAD);
+//
+//        blockPayload.setHash("ayhashfeldenya");
+//        blockPayload.setMerkleTreeRoot("ayhagaaa");
+//        blockPayload.setTimeStamp(234234234);
+//        blockPayload.setPrevBlockHash("sfsdkjfsdkjfhs");
+//        blockPayload.setTransactions(new ArrayList<Transaction>());
+//        blockMessage.setMessagePayload(blockPayload);
 //
 //        Parser parser = new Parser();
-//        String jsonMessage = parser.serializeMessage(message);
-//        parser.deSerializeMessage(jsonMessage);
-//    }
+//        String message = parser.serializeMessage(blockMessage);
+//        Message messageObj = parser.deSerializeMessage(message);
+    }
 }

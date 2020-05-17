@@ -4,7 +4,7 @@ import com.parsing.messages.types.*;
 
 public class MessageFactory {
 
-    public IMessage getMessage(MessagesTypes messageType){
+    public Message getMessage(MessagesTypes messageType){
         if(messageType == null){
             return null;
         }
