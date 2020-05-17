@@ -71,7 +71,7 @@ class ClientReceiverHandler extends Thread {
     public void run() {
         String received;
         String toreturn;
-        Client client = new Client();
+        Client client = new Client(1);
         while (true) {
             try {
 
@@ -94,7 +94,7 @@ class ClientReceiverHandler extends Thread {
                     t.setSignature(transactionPayload.getSignature());
 
                     //TODO: ID/Port/PublicKey/privateKey hardcoded??
-                    //TODO:Node0 configuration
+                    //TODO:Node0 configration
 
                 } else {
                     dos.writeUTF("Invalid Message Type!");

@@ -11,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.security.*;
-import java.security.spec.ECGenParameterSpec;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +21,9 @@ public class Client implements IClient {
 	private Map<Integer, PublicKey> nodes;
 	private int clientID;//TODO how to set IDs ?
  
+   public Client(int clientID){
+   	this.clientID = clientID;
+   }
     @Override
     public void getTransactions(String filePath) {
 		Parser parser = new Parser();

@@ -29,7 +29,7 @@ public class NodeSender {
                 // the following loop performs the exchange of
                 // information between client and client handler
                 System.out.println(dis.readUTF());
-                String tosend = "Time";
+                String tosend = meassage;
                 dos.writeUTF(tosend);
 
                 // printing date or time as requested by client
