@@ -14,22 +14,24 @@ import java.util.List;
 public class Controller implements IController {
 
     private BlockChain blockChain;
-    private List<Transaction> receivedTransactions;
+    public List<Transaction> receivedTransactions;
     private Block currentBlock;
     private int difficulty = 3;
     private int type = 1;
     private Set<String> coins;//hash set that has prev transaction with its output indes, can be spent
-    private Thread miningThread;
+//    private Thread miningThread;
+    private boolean broadcasting = true;
 
     public Controller(){
         blockChain = new BlockChain(blockChain.getGenesisBlock());
         receivedTransactions = new ArrayList<>();
         coins = new HashSet<>();
-        initiateThread();
+//        initiateThread();
     }
 
     @Override
     public boolean verifyTransaction(Transaction tx) {
+        //ToDo remove any transaction that is already taken in previous block
         return tx.verify(this) && !checkDoubleSpends(tx);
     }
 
@@ -38,72 +40,77 @@ public class Controller implements IController {
         Block block = b;
         if(!block.verifyHash() && !blockChain.addBlock(block))
             return;
-        miningThread.interrupt();
+//        while (broadcasting);
+//        miningThread.interrupt();
         handleCoins(block);
         List<Transaction> transactions = block.getTransactions();
         for (Transaction transaction:transactions){
             if (currentBlock.getTransactions().contains(transaction))
                 currentBlock.getTransactions().remove(transaction);
         }
-        initiateThread();
-
     }
 
-    private void initiateThread (){
-        miningThread = new Thread(() -> {
-            while (true) {
-                try {
-                    mineBlock();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        miningThread.start();
-    }
+//    private void initiateThread (){
+//        miningThread = new Thread(() -> {
+////            while (true) {
+//                try {
+//                    mineBlock();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+////            }
+//        });
+//        miningThread.start();
+//    }
 
     @Override
     public void mineBlock() throws IOException {
-        if (currentBlock == null)
+        if (currentBlock == null){
             currentBlock = new Block(blockChain.getChainHead().block.getHash());
+            currentBlock.setBlockThreshold(2);
+        }
         List<Transaction> pendingTransactions = new ArrayList<>();
-        int txCount = 0;
-        while ((new Date().getTime() - currentBlock.getTimeStamp() < 7000) && (txCount < currentBlock.getBlockThreshold())){
+//        int txCount = 0;
+//        while ((new Date().getTime() - currentBlock.getTimeStamp() < 1000) && (txCount < currentBlock.getBlockThreshold())){
             if (!receivedTransactions.isEmpty()) {
                 pendingTransactions.add(receivedTransactions.remove(0));
-                txCount++;
-            } else {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+//                txCount++;
             }
-        }
+//            else if (pendingTransactions.isEmpty()){
+//                    break;
+//                try {
+//                    Thread.sleep(2000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
 
         currentBlock.setTransactions(pendingTransactions);
         currentBlock.setMerkleTreeRoot(currentBlock.calculateMerkleTreeRoot());
         currentBlock.setHash(currentBlock.calculateBlockHash());
         currentBlock.solveBlock(type, difficulty);
         handleCoins(currentBlock);
+        pendingTransactions.clear();
         broadcastBlock();
     }
 
     @Override
     public void getReceivedTransactions(Transaction t) {
         Transaction transaction = t;
-        if(t.isInitialTransaction()){
+//        if(t.isInitialTransaction()){
             receivedTransactions.add(transaction);
-        } else {
-            if (verifyTransaction(transaction)){
-                receivedTransactions.add(transaction);
-            }
-        }
+//        } else {
+//            if (verifyTransaction(transaction)){
+//                receivedTransactions.add(transaction);
+//            }
+//        }
     }
 
     @Override
     //TODO: while loop to send to all nodes
     public void broadcastBlock() throws IOException {
+        broadcasting = true;
         NodeSender nodeSender = new NodeSender();
         Message blockMessage = new Message();
         PayloadFactory payloadFactory = new PayloadFactory();
@@ -119,8 +126,9 @@ public class Controller implements IController {
         blockMessage.setMessageType(MessagesTypes.BLOCK_MESSAGE.toString());
         Parser parser = new Parser();
         String message = parser.serializeMessage(blockMessage);
-        nodeSender.send(message);
+        nodeSender.send(message, IPsDTO.minersIPs);
         currentBlock = null;
+        broadcasting = false;
     }
 
     private void handleCoins (Block block){

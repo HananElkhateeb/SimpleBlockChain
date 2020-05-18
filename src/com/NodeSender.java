@@ -12,11 +12,10 @@ import java.util.*;
 
 // com.Client class
 public class NodeSender {
-    static ArrayList<String> ips = new ArrayList<>(Arrays.asList("6060"));
     public HashMap<Integer, PublicKey> networkPublicKeys = new HashMap<>();
     public boolean initializationFinishedState = false;
 //TODO: send message parameter or it is just received.
-    public void send(String meassage) throws IOException {
+    public void send(String meassage, ArrayList<String> ips ) throws IOException {
         for (String ip : ips) {
             try {
                 System.out.println("Sending Started");

@@ -19,8 +19,11 @@ import java.util.Date;
 // Network Server class
 public class MinerReceiver {
     public static void main(String[] args) throws IOException {
+
+        Controller controller = new Controller(); //moved from while loop
+        Thread t;
         // server is listening this port
-        ServerSocket ss = new ServerSocket(5050);
+        ServerSocket ss = new ServerSocket(5052);
 
         // running infinite loop for getting
         // client request
@@ -41,7 +44,7 @@ public class MinerReceiver {
                 System.out.println("Assigning new thread for this client");
 
                 // create a new thread object
-                Thread t = new MinerReceiverHandler(s, dis, dos);
+                 t = new MinerReceiverHandler(s, dis, dos, controller);
 
                 // Invoking the start() method
                 t.start();
@@ -61,25 +64,28 @@ class MinerReceiverHandler extends Thread {
     final DataInputStream dis;
     final DataOutputStream dos;
     final Socket s;
+    Controller controller;
 
 
     // Constructor
-    public MinerReceiverHandler(Socket s, DataInputStream dis, DataOutputStream dos) {
+    public MinerReceiverHandler(Socket s, DataInputStream dis, DataOutputStream dos, Controller controller) {
         this.s = s;
         this.dis = dis;
         this.dos = dos;
+        this.controller = controller;
     }
 
     @Override
     public void run() {
         String received;
         String toreturn;
-        Controller controller = new Controller(); //moved from while loop
         while (true) {
             try {
 
                 // receive the answer from client
                 received = dis.readUTF();
+
+                System.out.println("Miner received: " + received);
 
                 // write on output stream based on the
                 // answer from the client
@@ -94,8 +100,9 @@ class MinerReceiverHandler extends Thread {
                         b.setTimeStamp(blockPayload.getTimeStamp());
                         b.setPrevBlockHash(blockPayload.getPrevBlockHash());
                         b.setTransactions(blockPayload.getTransactions());
-
                         controller.receiveBlock(b);
+                        controller.receivedTransactions.clear();
+
                     } else if (receivedMsg.getMessageType().equals(MessagesTypes.TRANSACTION_MESSAGE.toString())){
                         TransactionPayload transactionPayload = (TransactionPayload) receivedMsg.getMessagePayload();
 
@@ -109,9 +116,14 @@ class MinerReceiverHandler extends Thread {
 
                         controller.getReceivedTransactions(t);
 
+                        if (controller.receivedTransactions.size() >= 3){
+                            controller.mineBlock();
+                        }
+
                     } else {
                         dos.writeUTF("Invalid Message Type!");
                     }
+                    dos.writeUTF("OK");
                 }
                 System.out.println("com.Client " + this.s + " sends exit...");
                 System.out.println("Closing this connection.");

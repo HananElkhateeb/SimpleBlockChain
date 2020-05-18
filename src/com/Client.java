@@ -20,6 +20,11 @@ public class Client implements IClient {
 	private PrivateKey privateKey;
 
 	private Map<Integer, PublicKey> nodes;
+
+	public int getClientID() {
+		return clientID;
+	}
+
 	private int clientID;//TODO how to set IDs ?
  
    public Client(int clientID){
@@ -98,7 +103,7 @@ public class Client implements IClient {
 		transMessage.setMessageType(MessagesTypes.TRANSACTION_MESSAGE.toString());
 		Parser parser = new Parser();
 		String message = parser.serializeMessage(transMessage);
-		nodeSender.send(message);
+		nodeSender.send(message, IPsDTO.minersIPs);
     }
 
 	@Override

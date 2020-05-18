@@ -26,7 +26,10 @@ import java.util.Map;
 public class ClientReceiver {
     public static void main(String[] args) throws IOException {
         // server is listening on this port
-        ServerSocket ss = new ServerSocket(6060);
+        ServerSocket ss = new ServerSocket(6062);
+
+        int clientID = 2;
+        Client client = new Client(clientID);
 
         // running infinite loop for getting
         // client request
@@ -46,7 +49,7 @@ public class ClientReceiver {
                 System.out.println("Assigning new thread for this client");
 
                 // create a new thread object
-                Thread t = new ClientReceiverHandler(s, dis, dos);
+                Thread t = new ClientReceiverHandler(s, dis, dos, client);
 
                 // Invoking the start() method
                 t.start();
@@ -64,20 +67,21 @@ class ClientReceiverHandler extends Thread {
     final DataInputStream dis;
     final DataOutputStream dos;
     final Socket s;
+    final Client client;
 
     // Constructor
-    public ClientReceiverHandler(Socket s, DataInputStream dis, DataOutputStream dos) {
+    public ClientReceiverHandler(Socket s, DataInputStream dis, DataOutputStream dos, Client client ) {
         this.s = s;
         this.dis = dis;
         this.dos = dos;
+        this.client = client;
     }
 
     @Override
     public void run() {
         String received;
         String toreturn;
-        int clientID = 1;
-        Client client = new Client(clientID);
+
         client.generateKeys();
         while (true) {
             try {
@@ -86,13 +90,13 @@ class ClientReceiverHandler extends Thread {
                 received = dis.readUTF();
 
                 if (received.equals("Done")){
-                    client.getTransactions("/home/karim/IdeaProjects/SimpleBlockChain/src/com/resources/txdataset_v2.txt");
+                    client.getTransactions("/home/karim/IdeaProjects/SimpleBlockChain/src/com/resources/txdataset_v7.3.txt");
                     dos.writeUTF("OK");
 //                } else {
 //                    dos.writeUTF("Client "+ clientID+ "Failed to get transactions");
                 } else if (received.equals("GetKey")){
                     System.out.println("kkkkkkkkkkkkkk> "+client.getPublicKey());
-                    toreturn = ""+clientID+"#&"+Base64.getEncoder().encodeToString(client.getPublicKey().getEncoded());
+                    toreturn = ""+client.getClientID()+"#&"+Base64.getEncoder().encodeToString(client.getPublicKey().getEncoded());
                     dos.writeUTF(toreturn);
                 } else {
                     Map<Integer, PublicKey> nodes = new HashMap<>();
