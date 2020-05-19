@@ -3,7 +3,7 @@ package com;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.security.KeyFactory;
 import java.security.PublicKey;
@@ -20,11 +20,14 @@ public class NodeSender {
             try {
                 System.out.println("Sending Started");
                 // getting localhost ip
-                InetAddress local_ip = InetAddress.getByName("localhost");
+//                InetAddress local_ip = InetAddress.getByName("41.43.121.36");
+//                Socket s = new Socket("41.43.121.36", 6666);
 
                 // establish the connection with server port 5056
-                Socket s = new Socket(local_ip, Integer.parseInt(ip));
-
+//                Socket s = new Socket(local_ip, 6666);
+                InetSocketAddress socketAddress = new InetSocketAddress("197.48.138.171", Integer.parseInt(ip));
+                Socket s = new Socket();
+                s.connect(socketAddress);
                 // obtaining input and out streams
                 DataInputStream dis = new DataInputStream(s.getInputStream());
                 DataOutputStream dos = new DataOutputStream(s.getOutputStream());

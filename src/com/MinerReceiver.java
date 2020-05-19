@@ -24,7 +24,7 @@ public class MinerReceiver {
         Thread t;
         long[] currDate = new long[1];
         // server is listening this port
-        ServerSocket ss = new ServerSocket(5053);
+        ServerSocket ss = new ServerSocket(5555);
 
         Thread watcher = new MineHandler(controller, currDate);
         watcher.start();

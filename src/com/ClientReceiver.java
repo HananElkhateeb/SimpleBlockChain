@@ -26,7 +26,7 @@ import java.util.Map;
 public class ClientReceiver {
     public static void main(String[] args) throws IOException {
         // server is listening on this port
-        ServerSocket ss = new ServerSocket(6061);
+        ServerSocket ss = new ServerSocket(6666);
 
         int clientID = 1;
         Client client = new Client(clientID);
@@ -34,7 +34,7 @@ public class ClientReceiver {
 
         // running infinite loop for getting
         // client request
-       while (true) {
+        while (true) {
             Socket s = null;
 
             try {
@@ -82,16 +82,14 @@ class ClientReceiverHandler extends Thread {
     public void run() {
         String received;
         String toreturn;
-
-        
-        try {
-            while (true) {
+        while (true) {
+            try {
 
                 // receive the answer from client
                 received = dis.readUTF();
 
                 if (received.equals("Done")){
-                    client.getTransactions("/home/hanan/SimpleBlockChain/src/com/resources/txdataset_v7.3.txt");
+                    client.getTransactions("/home/karim/IdeaProjects/SimpleBlockChain/src/com/resources/txdataset_v7.3.txt");
                     dos.writeUTF("OK");
 //                } else {
 //                    dos.writeUTF("Client "+ clientID+ "Failed to get transactions");
@@ -111,22 +109,15 @@ class ClientReceiverHandler extends Thread {
                         nodes.put(id,pub);
                         client.setNodes(nodes);
                     }
-//                    for(Map.Entry<Integer, PublicKey> entry : client.getNodes().entrySet()) {
-//                    	System.out.println("Nodes' Public keys : ");
-//                    	System.out.println(entry.getKey() + "ssss kteer " + entry.getValue());
-//                    }
                     dos.writeUTF("OK");
                 }
                 this.s.close();
                 System.out.println("Connection closed");
                 break;
-
-            }
-
-          } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException e) {
+            } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException e) {
                 e.printStackTrace();
-          }
-        
+            }
+        }
 
         try {
             // closing com.resources
