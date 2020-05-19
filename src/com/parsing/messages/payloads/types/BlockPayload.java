@@ -5,6 +5,7 @@ import com.parsing.messages.payloads.IPayload;
 import com.parsing.messages.payloads.Payload;
 
 import java.util.List;
+import java.util.Set;
 
 public class BlockPayload extends Payload implements IPayload {
 
@@ -13,6 +14,7 @@ public class BlockPayload extends Payload implements IPayload {
     private long timeStamp;
     private String hash = "";
     private List<Transaction> transactions;
+    private Set<String> spentcoins;
     public BlockPayload() {}
 
 
@@ -55,5 +57,13 @@ public class BlockPayload extends Payload implements IPayload {
 
     public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
+    }
+
+    public Set<String> getSpentcoins() {
+        return spentcoins;
+    }
+
+    public void setSpentcoins(Set<String> spentcoins) {
+        this.spentcoins = spentcoins;
     }
 }

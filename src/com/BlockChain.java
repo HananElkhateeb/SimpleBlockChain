@@ -1,5 +1,6 @@
 package com;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -59,6 +60,7 @@ public class BlockChain {
             return genesisBlock;
         genesisBlock = new Block("0");
         genesisBlock.setHash(genesisBlock.calculateBlockHash());
+        genesisBlock.setTransactions(new ArrayList<>());
         return genesisBlock;
     }
 
@@ -72,5 +74,15 @@ public class BlockChain {
                 break;
         }
         return current;
+    }
+
+    public Boolean checkDoubleSpend (String coin){
+        if (block.checkDoubleSpend(coin))
+            return true;
+        for (BlockChain child : blockChain) {
+            if (child.checkDoubleSpend(coin))
+                return true;
+        }
+        return false;
     }
 }

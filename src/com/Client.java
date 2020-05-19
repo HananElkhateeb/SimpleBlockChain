@@ -25,7 +25,7 @@ public class Client implements IClient {
 		return clientID;
 	}
 
-	private int clientID;//TODO how to set IDs ?
+	private int clientID;
  
    public Client(int clientID){
    	this.clientID = clientID;
@@ -85,7 +85,6 @@ public class Client implements IClient {
     }
 
     @Override
-	//TODO: while loop to send to all nodes
     public void broadcastTransaction(Transaction transaction) throws IOException {
     	NodeSender nodeSender = new NodeSender();
 		Message transMessage = new Message();

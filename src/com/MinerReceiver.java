@@ -22,9 +22,12 @@ public class MinerReceiver {
 
         Controller controller = new Controller(); //moved from while loop
         Thread t;
+        long[] currDate = new long[1];
         // server is listening this port
-        ServerSocket ss = new ServerSocket(5052);
+        ServerSocket ss = new ServerSocket(5051);
 
+        Thread watcher = new MineHandler(controller, currDate);
+        watcher.start();
         // running infinite loop for getting
         // client request
         while (true) {
@@ -44,7 +47,7 @@ public class MinerReceiver {
                 System.out.println("Assigning new thread for this client");
 
                 // create a new thread object
-                 t = new MinerReceiverHandler(s, dis, dos, controller);
+                 t = new MinerReceiverHandler(s, dis, dos, controller, currDate);
 
                 // Invoking the start() method
                 t.start();
@@ -57,6 +60,26 @@ public class MinerReceiver {
     }
 }
 
+class MineHandler extends Thread{
+    Controller controller;
+    long[] currDate;
+    public MineHandler(Controller controller, long[] currDate){
+        this.controller = controller;
+        this.currDate = currDate;
+    }
+    @Override
+    public void run(){
+        while (true){
+            if (new Date().getTime()-currDate[0] > 3000 && !controller.receivedTransactions.isEmpty()){
+                try {
+                    controller.mineBlock();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
 // Network ClientHandler class
 class MinerReceiverHandler extends Thread {
     DateFormat fordate = new SimpleDateFormat("yyyy/MM/dd");
@@ -65,14 +88,15 @@ class MinerReceiverHandler extends Thread {
     final DataOutputStream dos;
     final Socket s;
     Controller controller;
-
+    long[] currDate;
 
     // Constructor
-    public MinerReceiverHandler(Socket s, DataInputStream dis, DataOutputStream dos, Controller controller) {
+    public MinerReceiverHandler(Socket s, DataInputStream dis, DataOutputStream dos, Controller controller, long[] currDate) {
         this.s = s;
         this.dis = dis;
         this.dos = dos;
         this.controller = controller;
+        this.currDate = currDate;
     }
 
     @Override
@@ -100,9 +124,9 @@ class MinerReceiverHandler extends Thread {
                         b.setTimeStamp(blockPayload.getTimeStamp());
                         b.setPrevBlockHash(blockPayload.getPrevBlockHash());
                         b.setTransactions(blockPayload.getTransactions());
+                        b.setSpentcoins(blockPayload.getSpentcoins());
                         controller.receiveBlock(b);
-                        controller.receivedTransactions.clear();
-
+                        currDate[0] = new Date().getTime();
                     } else if (receivedMsg.getMessageType().equals(MessagesTypes.TRANSACTION_MESSAGE.toString())){
                         TransactionPayload transactionPayload = (TransactionPayload) receivedMsg.getMessagePayload();
 
@@ -115,9 +139,9 @@ class MinerReceiverHandler extends Thread {
                         t.setSignature(transactionPayload.getSignature());
 
                         controller.getReceivedTransactions(t);
-
-                        if (controller.receivedTransactions.size() >= 3){
+                        if (controller.receivedTransactions.size() >= 4){
                             controller.mineBlock();
+                            currDate[0] = new Date().getTime();
                         }
 
                     } else {

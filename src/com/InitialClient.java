@@ -13,7 +13,7 @@ public class InitialClient {
         Client client = new Client(clientID);
         client.setNodes(nodeSender.networkPublicKeys);
         client.generateKeys();
-        client.getTransactions("/home/karim/IdeaProjects/SimpleBlockChain/src/com/resources/txdataset_v7.3.txt");
+        client.getTransactions("/home/hanan/SimpleBlockChain/src/com/resources/txdataset_v7.3.txt");
 
         //ToDo send Done to clients
         new NodeSender().send("Done", IPsDTO.clientsIPs);

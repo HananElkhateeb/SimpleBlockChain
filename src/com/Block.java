@@ -1,7 +1,9 @@
 package com;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Block {
     private int blockThreshold;
@@ -11,12 +13,14 @@ public class Block {
     private int nonce = -1;
     private String hash = "";
     private List<Transaction> transactions;
+    private Set<String> spentcoins;
 
 
 
     public Block (String prevBlockHash){
         this.prevBlockHash = prevBlockHash;
         this.timeStamp = new Date().getTime();
+        this.spentcoins = new HashSet<>();
     }
 
     public int getBlockThreshold() {
@@ -79,6 +83,18 @@ public class Block {
     }
 
     public void addTransaction(Transaction tx) { transactions.add(tx); }
+
+    public Set<String> getSpentcoins() {
+        return spentcoins;
+    }
+
+    public void setSpentcoins(Set<String> spentcoins) {
+        this.spentcoins = spentcoins;
+    }
+
+    public boolean checkDoubleSpend (String coin){
+        return spentcoins.contains(coin);
+    }
 
     public boolean containTransaction(long txid) {
         for (Transaction transaction:transactions){
