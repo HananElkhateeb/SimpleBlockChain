@@ -34,6 +34,7 @@ public class Parser {
             transaction.setTransactionID(Long.valueOf(params[0]));
             transaction.setInitialTransaction(true);
             transactionInput.setInput(Integer.valueOf(params[1].substring(params[1].indexOf(':')+1).trim()));
+//            System.out.println("Sender ID : " + Integer.valueOf(params[1].substring(params[1].indexOf(':')+1).trim()));
 
             ArrayList<TransactionOutput> transactionOutputs = new ArrayList<>();
             TransactionOutput transactionOutput = new TransactionOutput();
@@ -46,6 +47,8 @@ public class Parser {
             transaction.setTransactionID(Long.valueOf(params[0]));
             transaction.setInitialTransaction(false);
             transactionInput.setInput(Integer.valueOf(params[1].substring(params[1].indexOf(':')+1).trim()));
+//            System.out.println("Sender ID : " + Integer.valueOf(params[1].substring(params[1].indexOf(':')+1).trim()));
+
             transactionInput.setPrevTX(Integer.valueOf(params[2].substring(params[2].indexOf(':')+1).trim()));
             transactionInput.setPrevOutputIndex(Short.valueOf(params[3].substring(params[3].indexOf(':')+1).trim()));
             ArrayList<TransactionOutput> transactionOutputs = new ArrayList<>();
@@ -113,8 +116,8 @@ public class Parser {
 //
 //         PayloadFactory payloadFactory = new PayloadFactory();
 //         TransactionPayload blockPayload = (TransactionPayload) payloadFactory.getPayload(PayloadTypes.TRANSACTION_PAYLOAD);
-//         Client client = new Client();
-//         Client client2 = new Client();
+//         Client client = new Client(1);
+//         Client client2 = new Client(2);
 //
 //         client.generateKeys();
 //         client2.generateKeys();
@@ -137,7 +140,8 @@ public class Parser {
 //         t.setOutputs(list);
 //         t.generateSignature(client.getPrivateKey());
 //         t.setHash(t.calculateHash());
-//         t.setTransactionID(1);
+//         System.out.println("Before serialization -> " + t.verifySignature());
+//
 //         blockPayload.setHash(t.getHash());
 //         blockPayload.setOutputs(t.getOutputs());
 //         blockPayload.setSignature(t.getSignature());
@@ -149,18 +153,26 @@ public class Parser {
 //         String message = parser.serializeMessage(transMessage);
 //         Message messageObj = parser.deSerializeMessage(message);
 //         if(messageObj.getMessageType().equals(MessagesTypes.TRANSACTION_MESSAGE.toString())) {
-//        	 TransactionPayload tx = (TransactionPayload) messageObj.getMessagePayload();
+//        	 TransactionPayload transactionPayload = (TransactionPayload) messageObj.getMessagePayload();
 //        	 //Transaction tOut = new Transaction();
-//        	 System.out.println(tx.getInput().getSender());
-//        	 System.out.println(tx.getOutputs().get(0).getReciever());
-//        	 System.out.println(tx.getTransactionID());
-//        	 System.out.println(tx.getHash());
-//        	 System.out.println(t.getHash());
+////        	 System.out.println(tx.getInput().getSender());
+////        	 System.out.println(tx.getOutputs().get(0).getReciever());
+////        	 System.out.println(tx.getTransactionID());
+////        	 System.out.println(tx.getHash());
+////        	 System.out.println(t.getHash());
+//        	 Transaction tx = new Transaction();
+//             tx.setInput(transactionPayload.getInput());
+//             tx.setOutputs(transactionPayload.getOutputs());
+//             tx.setTransactionID(transactionPayload.getTransactionID());
+//             tx.setHash(transactionPayload.getHash());
+//             tx.setInitialTransaction(transactionPayload.isInitialTransaction());
+//             tx.setSignature(transactionPayload.getSignature());
+//             System.out.println("After deserialization -> " + tx.verifySignature());
 //        	 KeyFactory factory;
 //     		try {
 //     			factory = KeyFactory.getInstance("EC");
-//     			PublicKey public_key_1 = (PublicKey) factory.generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(tx.getInput().getSender())));
-//     			PublicKey public_key_2 = (PublicKey) factory.generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(tx.getOutputs().get(0).getReciever())));
+//     			PublicKey public_key_1 = (PublicKey) factory.generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(transactionPayload.getInput().getSender())));
+//     			PublicKey public_key_2 = (PublicKey) factory.generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(transactionPayload.getOutputs().get(0).getReciever())));
 //     			System.out.println(public_key_1.equals(client.getPublicKey()));
 //     			System.out.println(public_key_2.equals(client2.getPublicKey()));
 //     		}catch(Exception e) {
@@ -170,25 +182,26 @@ public class Parser {
 //
 //
 //         }
-       
-//        Message blockMessage = new Message();
-//        blockMessage.setMessageType(MessagesTypes.BLOCK_MESSAGE.toString());
-//
-//        PayloadFactory payloadFactory = new PayloadFactory();
-//        BlockPayload blockPayload = (BlockPayload) payloadFactory.getPayload(PayloadTypes.BLOCK_PAYLOAD);
-//
-//        blockPayload.setHash("ayhashfeldenya");
-//        blockPayload.setMerkleTreeRoot("ayhagaaa");
-//        blockPayload.setTimeStamp(234234234);
-//        blockPayload.setPrevBlockHash("sfsdkjfsdkjfhs");
-//        blockPayload.setTransactions(new ArrayList<Transaction>());
-//        blockMessage.setMessagePayload(blockPayload);
-//
-//        Parser parser = new Parser();
-//        String message = parser.serializeMessage(blockMessage);
-//        Message messageObj = parser.deSerializeMessage(message);
-
-//       Parser parser = new Parser();
-//        parser.parseInputLineTransaction("intput 0  value:\n");
 //    }
+//       
+////        Message blockMessage = new Message();
+////        blockMessage.setMessageType(MessagesTypes.BLOCK_MESSAGE.toString());
+////
+////        PayloadFactory payloadFactory = new PayloadFactory();
+////        BlockPayload blockPayload = (BlockPayload) payloadFactory.getPayload(PayloadTypes.BLOCK_PAYLOAD);
+////
+////        blockPayload.setHash("ayhashfeldenya");
+////        blockPayload.setMerkleTreeRoot("ayhagaaa");
+////        blockPayload.setTimeStamp(234234234);
+////        blockPayload.setPrevBlockHash("sfsdkjfsdkjfhs");
+////        blockPayload.setTransactions(new ArrayList<Transaction>());
+////        blockMessage.setMessagePayload(blockPayload);
+////
+////        Parser parser = new Parser();
+////        String message = parser.serializeMessage(blockMessage);
+////        Message messageObj = parser.deSerializeMessage(message);
+//
+////       Parser parser = new Parser();
+////        parser.parseInputLineTransaction("intput 0  value:\n");
+////    }
 }

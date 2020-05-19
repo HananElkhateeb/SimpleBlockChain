@@ -10,13 +10,15 @@ public class InitialClient {
         while (!nodeSender.initializationFinishedState);
         nodeSender.send("StoreKeys", IPsDTO.clientsIPs);
         int clientID = 0;
+        
         Client client = new Client(clientID);
         client.setNodes(nodeSender.networkPublicKeys);
         client.generateKeys();
-        client.getTransactions("/home/hanan/SimpleBlockChain/src/com/resources/txdataset_v7.3.txt");
+        client.getTransactions("/home/sohayla/eclipse-workspace/Distributed-Project-BC/SimpleBlockChain/src/com/resources/txdataset_v7.3.txt");
 
         //ToDo send Done to clients
         new NodeSender().send("Done", IPsDTO.clientsIPs);
 
     }
+    
 }

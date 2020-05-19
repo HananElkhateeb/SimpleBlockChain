@@ -34,6 +34,10 @@ public class Client implements IClient {
     public void getTransactions(String filePath) {
 		Parser parser = new Parser();
 		BufferedReader reader;
+//		for(Map.Entry<Integer, PublicKey> entry : getNodes().entrySet()) {
+//        	System.out.println("Nodes' Public keys : ");
+//        	System.out.println(entry.getKey() + "ssss kteer " + entry.getValue());
+//        }
 		try {
 			reader = new BufferedReader(new FileReader(filePath));
 			String line = reader.readLine();
@@ -54,14 +58,15 @@ public class Client implements IClient {
 	private Transaction fillSecurityFields(Transaction transaction) {
 		String hash = transaction.calculateHash();
 		transaction.setHash(hash);
-		transaction.getInput().setSender(Base64.getEncoder().encodeToString(this.publicKey.getEncoded()));
-		transaction.generateSignature(this.privateKey);
+		transaction.getInput().setSender(Base64.getEncoder().encodeToString(this.getPublicKey().getEncoded()));
 		List<TransactionOutput> outputs = transaction.getOutputs();
 		for(TransactionOutput txo : outputs) {
 			//TODO if client does not exist
 			Integer clientID = txo.getOutputIndex();
 			txo.setReciever(Base64.getEncoder().encodeToString(nodes.get(clientID).getEncoded()));
 		}
+		transaction.generateSignature(this.privateKey);
+
     	return transaction;
 	}
 
@@ -78,6 +83,9 @@ public class Client implements IClient {
 			// set the public and private keys from the keyPair 	
 			privateKey = keyPair.getPrivate();    	
 			publicKey = keyPair.getPublic();
+			System.out.println("Client " + this.clientID + " Keys :");
+			System.out.println(privateKey);
+			System.out.println(Base64.getEncoder().encodeToString(this.getPublicKey().getEncoded()));
 		}
 		catch(Exception e) {
 			throw new RuntimeException(e);
@@ -113,6 +121,10 @@ public class Client implements IClient {
 	@Override
 	public PrivateKey getPrivateKey() {
 		return privateKey;
+	}
+	
+	public Map<Integer, PublicKey> getNodes() {
+		return nodes;
 	}
 
 	@Override

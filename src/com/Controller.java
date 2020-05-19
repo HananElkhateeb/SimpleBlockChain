@@ -29,10 +29,10 @@ public class Controller implements IController {
 
     @Override
     public boolean verifyTransaction(Transaction tx) {
-        System.out.println("1======> "+ (getTransaction(tx.getTransactionID()) == null));
-        System.out.println("2======> " + tx.verify(this));
-        System.out.println("3======>" + checkDoubleSpendsWithBlocks(tx));
-        System.out.println("4======>" + checkDoubleSpendsWithReceivedTrans(tx));
+//        System.out.println("1======> "+ (getTransaction(tx.getTransactionID()) == null));
+//        System.out.println("2======> " + tx.verify(this));
+//        System.out.println("3======>" + checkDoubleSpendsWithBlocks(tx));
+//        System.out.println("4======>" + checkDoubleSpendsWithReceivedTrans(tx));
         return (getTransaction(tx.getTransactionID()) == null) && tx.verify(this)
                 && !checkDoubleSpendsWithBlocks(tx)
                 && !checkDoubleSpendsWithReceivedTrans(tx);
@@ -139,11 +139,11 @@ public class Controller implements IController {
                 return block.getTransaction(txid + "");
         }
         return null;
+        
     }
 
     public Transaction getTransactionInCurrentBlock (long txid){
-        List<Transaction> transactions = currentBlock.getTransactions();
-        for (Transaction transaction:transactions){
+        for (Transaction transaction:this.receivedTransactions){
             if (transaction.getTransactionID() == txid)
                 return transaction;
         }

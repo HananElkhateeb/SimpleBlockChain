@@ -31,6 +31,7 @@ public class Transaction {
 	public long getTransactionID() {
 		return transactionID;
 	}
+	
 
 	public void setTransactionID(long transactionID) {
 		this.transactionID = transactionID;
@@ -130,26 +131,32 @@ public class Transaction {
 	//TODO testing
 	public boolean verify(Controller controller) {
 		//Check Signature
-		if(verifySignature() == false) {
-			System.out.println("#com.Transaction Signature failed to verify");
+		if(!verifySignature()) {
+			System.out.println("#Transaction Signature failed to verify");
 			return false;
 		}
 		long prevTX = input.getPrevTX();
 		Short prevO = input.getPrevOutputIndex();
 	
 		Transaction prevTx = controller.getTransaction(prevTX);
-		TransactionOutput txIN = prevTx.getOutputs().get(prevO);
+		if(prevTx == null)
+			prevTx = controller.getTransactionInCurrentBlock(prevTX);
+		if(prevTx == null) {
+			System.out.println("#Transaction Previous transaction does not exist.");
+			return false;
+		}
+		TransactionOutput txIN = prevTx.getOutputs().get(prevO-1);
 
 		//check same public key from previous transaction
 	
-		if(txIN.getReciever() != input.getSender()) {
+		if(!txIN.getReciever().equals(input.getSender())) {
 			System.out.println("#Transactions public keys don't match");
 			return false;
 		}
 		
 		//check credit is enough
 		float totalVal = this.computeTotal();
-		if(totalVal > txIN.getValue()) {
+		if(totalVal >= txIN.getValue()) {
 			System.out.println("#Transactions credit is not enough");
 			return false;
 		}

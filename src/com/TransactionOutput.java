@@ -8,6 +8,7 @@ public class TransactionOutput {
     private String reciever;
 
     public int getOutputIndex() {
+    	
         return outputIndex;
     }
 

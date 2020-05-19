@@ -28,6 +28,7 @@ public class Utils {
 				if(hex.length() == 1)
 					hexString.append('0');
 				hexString.append(hex);
+				
 			}
 			return hexString.toString();
 		}
@@ -42,6 +43,9 @@ public class Utils {
 	 * @return the digital signature for the sender
 	 * */
 	public static byte[] digialSignature(PrivateKey privateKey, String data) {
+//		System.out.println("Data While Sigining : " + data);
+//		System.out.println("Private Key While Sigining : " + privateKey);
+
 		Signature dsa;
 		byte[] output = new byte[0];
 		try {
@@ -66,6 +70,8 @@ public class Utils {
 	 * */
 	public static boolean verifyDigitalSign(PublicKey publicKey, String data, byte[] signature) {
 		try {
+//			System.out.println("Data While Verifying : " + data);
+//			System.out.println("Public Key While Verifying : " + publicKey);
 			Signature dsVerify = Signature.getInstance("SHA256withECDSA");
 			dsVerify.initVerify(publicKey);
 			dsVerify.update(data.getBytes());

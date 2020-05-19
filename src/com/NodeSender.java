@@ -51,6 +51,7 @@ public class NodeSender {
                 if (tosend.equals("GetKey") && received!= null && !received.isEmpty()){
                     initializationFinishedState = false;
                     String[] receivedClientInfo = received.split("#&");
+                    System.out.println("Recieved info size : " + receivedClientInfo.length);
                     KeyFactory factory = KeyFactory.getInstance("EC");
                     int clientID = Integer.parseInt(receivedClientInfo[0]);
                     System.out.println("*************************Pub  "+ receivedClientInfo[1]);

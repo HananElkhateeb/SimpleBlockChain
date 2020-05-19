@@ -1,4 +1,4 @@
 1	intput:0	value:15.24179	output:1
 2	intput:0	value:15.24179	output:2
-3	intput:1	previoustx:1	outputindex:1	value1:0.6444474	output1:2	value2:10.64253	output2:1	value3:3.213972	output3:2
-4	intput:1	previoustx:1	outputindex:1	value1:0.6444474	output1:2	value2:10.64253	output2:1	value3:3.213972	output3:2
+3	intput:1	previoustx:1	outputindex:1	value1:0.6444474	output1:2	value2:10.64253	output2:2	value3:3.213972	output3:2
+4	intput:2	previoustx:2	outputindex:1	value1:0.6444474	output1:2	value2:10.64253	output2:1	value3:3.213972	output3:2
