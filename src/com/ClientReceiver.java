@@ -26,9 +26,9 @@ import java.util.Map;
 public class ClientReceiver {
     public static void main(String[] args) throws IOException {
         // server is listening on this port
-        ServerSocket ss = new ServerSocket(6061);
+        ServerSocket ss = new ServerSocket(6062);
 
-        int clientID = 1;
+        int clientID = 2;
         Client client = new Client(clientID);
         client.generateKeys();
 
@@ -91,7 +91,7 @@ class ClientReceiverHandler extends Thread {
                 received = dis.readUTF();
 
                 if (received.equals("Done")){
-                    client.getTransactions("/home/sohayla/eclipse-workspace/Distributed-Project-BC/SimpleBlockChain/src/com/resources/txdataset_v7.3.txt");
+                    client.getTransactions("/home/hanan/SimpleBlockChain/src/com/resources/txdataset_v7.3.txt");
                     dos.writeUTF("OK");
 //                } else {
 //                    dos.writeUTF("Client "+ clientID+ "Failed to get transactions");

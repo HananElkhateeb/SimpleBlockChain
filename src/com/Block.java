@@ -112,7 +112,7 @@ public class Block {
     }
 
     public String calculateBlockHash(){
-        return Utils.sha256(prevBlockHash + merkleTreeRoot + Long.toString(timeStamp) + Integer.toString(nonce));
+        return Utils.sha256(prevBlockHash + merkleTreeRoot + Integer.toString(nonce));
     }
 
     private String getDificultyString(int difficulty) {

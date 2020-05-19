@@ -24,7 +24,7 @@ public class MinerReceiver {
         Thread t;
         long[] currDate = new long[1];
         // server is listening this port
-        ServerSocket ss = new ServerSocket(5052);
+        ServerSocket ss = new ServerSocket(5051);
 
         Thread watcher = new MineHandler(controller, currDate);
         watcher.start();
@@ -125,7 +125,9 @@ class MinerReceiverHandler extends Thread {
                         b.setPrevBlockHash(blockPayload.getPrevBlockHash());
                         b.setTransactions(blockPayload.getTransactions());
                         b.setSpentcoins(blockPayload.getSpentcoins());
+                        b.setNonce(blockPayload.getNonce());
                         controller.receiveBlock(b);
+                        controller.receivedTransactions.clear();
                         currDate[0] = new Date().getTime();
                     } else if (receivedMsg.getMessageType().equals(MessagesTypes.TRANSACTION_MESSAGE.toString())){
                         TransactionPayload transactionPayload = (TransactionPayload) receivedMsg.getMessagePayload();

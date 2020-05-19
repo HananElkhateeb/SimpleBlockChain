@@ -15,6 +15,7 @@ public class BlockPayload extends Payload implements IPayload {
     private String hash = "";
     private List<Transaction> transactions;
     private Set<String> spentcoins;
+    private int nonce;
     public BlockPayload() {}
 
 
@@ -65,5 +66,13 @@ public class BlockPayload extends Payload implements IPayload {
 
     public void setSpentcoins(Set<String> spentcoins) {
         this.spentcoins = spentcoins;
+    }
+
+    public int getNonce() {
+        return nonce;
+    }
+
+    public void setNonce(int nonce) {
+        this.nonce = nonce;
     }
 }

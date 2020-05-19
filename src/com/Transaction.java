@@ -14,13 +14,13 @@ public class Transaction {
 	private TransactionInput input;
 	private List<TransactionOutput> outputs;
 	private String hash;
-	private float leftover;
+//	private float leftover;
 	private byte[] signature;
 	boolean initialTransaction;
 
 
 	public Transaction(){
-		leftover = -1;
+//		leftover = -1;
 		transactionID = -1;
 		input = null;
 		outputs = new ArrayList<>();
@@ -164,26 +164,34 @@ public class Transaction {
 		return true;
 	}
 	
-	public float getLeftOver() {
-		if(leftover != -1)
-			return leftover;
-		float total = this.computeTotal();
-		long prevTX = input.getPrevTX();
-		Short prevO = input.getPrevOutputIndex();
-		Controller controller = new Controller(); //TODO which list?
-
-		Transaction prevTx = controller.getTransaction(prevTX);
-		TransactionOutput txIN = prevTx.getOutputs().get(prevO);
-				
-		float wallet = txIN.getValue();
-		this.leftover = wallet - total;
-		return leftover;
-	}
+//	public float getLeftOver() {
+//		if(leftover != -1)
+//			return leftover;
+//		float total = this.computeTotal();
+//		long prevTX = input.getPrevTX();
+//		Short prevO = input.getPrevOutputIndex();
+//		Controller controller = new Controller(); //TODO which list?
+//
+//		Transaction prevTx = controller.getTransaction(prevTX);
+//		TransactionOutput txIN = prevTx.getOutputs().get(prevO);
+//
+//		float wallet = txIN.getValue();
+//		this.leftover = wallet - total;
+//		return leftover;
+//	}
 
 	private float computeTotal() {
 		float total = 0;
 		for(TransactionOutput txo : outputs)
 			total += txo.getValue();
 		return total;
+	}
+
+	public void printTransaction(){
+		System.out.println("transactionID " + transactionID);
+		System.out.println("input:" +input.getPrevTX() + "  "+ input.getPrevOutputIndex());
+		for (TransactionOutput transactionOutput: outputs){
+			System.out.println("output: " + transactionOutput.getValue() + "  "+ transactionOutput.getOutputIndex());
+		}
 	}
 }

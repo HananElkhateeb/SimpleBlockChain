@@ -29,7 +29,7 @@ public class Controller implements IController {
 
     @Override
     public boolean verifyTransaction(Transaction tx) {
-//        System.out.println("1======> "+ (getTransaction(tx.getTransactionID()) == null));
+        System.out.println("1======> "+ (getTransaction(tx.getTransactionID()) == null));
 //        System.out.println("2======> " + tx.verify(this));
 //        System.out.println("3======>" + checkDoubleSpendsWithBlocks(tx));
 //        System.out.println("4======>" + checkDoubleSpendsWithReceivedTrans(tx));
@@ -41,12 +41,19 @@ public class Controller implements IController {
     @Override
     public void receiveBlock(Block b) {
         Block block = b;
-        if(!block.verifyHash() && !blockChain.addBlock(block))
+        boolean verifyhash = block.verifyHash();
+        boolean addblock = blockChain.addBlock(block);
+//        System.out.println("verifyhash" + verifyhash);
+//        System.out.println("addblock"+ addblock);
+        if(!verifyhash && !addblock)
             return;
         List<Transaction> transactions = block.getTransactions();
         for (Transaction transaction:transactions){
-            if (currentBlock.getTransactions().contains(transaction))
-                currentBlock.getTransactions().remove(transaction);
+            System.out.println("Block Content");
+            transaction.printTransaction();
+            System.out.println("-------------------------");
+//            if (currentBlock.getTransactions().contains(transaction))
+//                currentBlock.getTransactions().remove(transaction);
         }
     }
 
@@ -62,12 +69,16 @@ public class Controller implements IController {
                 pendingTransactions.add(receivedTransactions.remove(0));
         }
 
-        currentBlock.setTransactions(pendingTransactions);
+//        System.out.println("pending size: " + pendingTransactions.size());
+        currentBlock.setTransactions(List.copyOf(pendingTransactions));
+//        System.out.println("curr block before:" + currentBlock.getTransactions().size());
         currentBlock.setMerkleTreeRoot(currentBlock.calculateMerkleTreeRoot());
-        currentBlock.setHash(currentBlock.calculateBlockHash());
         currentBlock.solveBlock(type, difficulty);
+        currentBlock.setHash(currentBlock.calculateBlockHash());
         handleCoins();
         pendingTransactions.clear();
+//        System.out.println("pending size after: " + pendingTransactions.size());
+//        System.out.println("curr block after:" + currentBlock.getTransactions().size());
         broadcastBlock();
     }
 
@@ -93,8 +104,10 @@ public class Controller implements IController {
         blockPayload.setMerkleTreeRoot(currentBlock.getMerkleTreeRoot());
         blockPayload.setTimeStamp(currentBlock.getTimeStamp());
         blockPayload.setPrevBlockHash(currentBlock.getPrevBlockHash());
+//        System.out.println("curr block size: " + currentBlock.getTransactions().size());
         blockPayload.setTransactions(currentBlock.getTransactions());
         blockPayload.setSpentcoins(currentBlock.getSpentcoins());
+        blockPayload.setNonce(currentBlock.getNonce());
         blockMessage.setMessagePayload(blockPayload);
 
         blockMessage.setMessageType(MessagesTypes.BLOCK_MESSAGE.toString());
