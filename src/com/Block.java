@@ -1,9 +1,6 @@
 package com;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Block {
     private int blockThreshold;
@@ -142,4 +139,22 @@ public class Block {
 
     }
 
+    public void printBlock(){
+        List<Transaction> transactions = this.getTransactions();
+        for (Transaction transaction:transactions){
+            System.out.println("Block Content");
+            transaction.printTransaction();
+            System.out.println("-------------------------");
+        }
+    }
+
+    public Block copy(){
+        Block cloned = new Block(this.prevBlockHash);
+        cloned.setNonce(this.nonce);
+        cloned.setMerkleTreeRoot(this.merkleTreeRoot);
+        cloned.setTimeStamp(this.timeStamp);
+        cloned.setHash(this.hash);
+        cloned.setTransactions(List.copyOf(this.transactions));
+        return cloned;
+    }
 }

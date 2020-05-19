@@ -141,7 +141,7 @@ class MinerReceiverHandler extends Thread {
                         t.setSignature(transactionPayload.getSignature());
 
                         controller.getReceivedTransactions(t);
-                        if (controller.receivedTransactions.size() >= 4){
+                        if (controller.receivedTransactions.size() >= 2){
                             controller.mineBlock();
                             currDate[0] = new Date().getTime();
                         }

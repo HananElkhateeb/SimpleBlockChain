@@ -47,14 +47,13 @@ public class Controller implements IController {
 //        System.out.println("addblock"+ addblock);
         if(!verifyhash && !addblock)
             return;
-        List<Transaction> transactions = block.getTransactions();
-        for (Transaction transaction:transactions){
-            System.out.println("Block Content");
-            transaction.printTransaction();
-            System.out.println("-------------------------");
-//            if (currentBlock.getTransactions().contains(transaction))
-//                currentBlock.getTransactions().remove(transaction);
-        }
+//        blockChain.addBlock(b.copy());
+        System.out.println("# of Nodes: " + blockChain.getNumberOfNodes());
+//        System.out.println("here1---------------");
+//        blockChain.printChain();
+//        System.out.println("here2-----------------");
+        block.printBlock();
+
     }
 
     @Override
@@ -69,22 +68,18 @@ public class Controller implements IController {
                 pendingTransactions.add(receivedTransactions.remove(0));
         }
 
-//        System.out.println("pending size: " + pendingTransactions.size());
         currentBlock.setTransactions(List.copyOf(pendingTransactions));
-//        System.out.println("curr block before:" + currentBlock.getTransactions().size());
         currentBlock.setMerkleTreeRoot(currentBlock.calculateMerkleTreeRoot());
         currentBlock.solveBlock(type, difficulty);
         currentBlock.setHash(currentBlock.calculateBlockHash());
         handleCoins();
         pendingTransactions.clear();
-//        System.out.println("pending size after: " + pendingTransactions.size());
-//        System.out.println("curr block after:" + currentBlock.getTransactions().size());
         broadcastBlock();
     }
 
     @Override
     public void getReceivedTransactions(Transaction transaction) {
-        if(transaction.isInitialTransaction()){
+        if((getTransaction(transaction.getTransactionID()) == null) && transaction.isInitialTransaction()){
             receivedTransactions.add(transaction);
         } else {
             if (verifyTransaction(transaction)){
@@ -104,7 +99,6 @@ public class Controller implements IController {
         blockPayload.setMerkleTreeRoot(currentBlock.getMerkleTreeRoot());
         blockPayload.setTimeStamp(currentBlock.getTimeStamp());
         blockPayload.setPrevBlockHash(currentBlock.getPrevBlockHash());
-//        System.out.println("curr block size: " + currentBlock.getTransactions().size());
         blockPayload.setTransactions(currentBlock.getTransactions());
         blockPayload.setSpentcoins(currentBlock.getSpentcoins());
         blockPayload.setNonce(currentBlock.getNonce());

@@ -14,15 +14,20 @@ public class BlockChain {
     }
 
     public boolean addBlock (Block block){
+        System.out.println("Entered add block");
         if (this.block.getHash().equals(block.getPrevBlockHash())) {
             blockChain.add(new BlockChain(block));
+            System.out.println("done1");
             return true;
         }
 
         for (BlockChain child : blockChain) {
-            if (child.addBlock(block))
+            if (child.addBlock(block)) {
+                System.out.println("Done 2");
                 return true;
+            }
         }
+        System.out.println("not Done");
         return false;
     }
 
@@ -84,5 +89,24 @@ public class BlockChain {
                 return true;
         }
         return false;
+    }
+
+    public int getNumberOfNodes(){
+        if(blockChain.isEmpty())
+            return 0;
+        int count = blockChain.size();
+        for (BlockChain child: blockChain) {
+            count += child.getNumberOfNodes();
+        }
+        return count;
+    }
+
+    public void printChain (){
+        if (blockChain.isEmpty())
+            this.block.printBlock();
+        BlockChain current = null;
+        for (BlockChain child : blockChain) {
+            child.printChain();
+        }
     }
 }
