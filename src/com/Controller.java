@@ -49,6 +49,7 @@ public class Controller implements IController {
             return;
 //        blockChain.addBlock(b.copy());
         System.out.println("# of Nodes: " + blockChain.getNumberOfNodes());
+        System.out.println("Chain Depth: " + blockChain.depth());
 //        System.out.println("here1---------------");
 //        blockChain.printChain();
 //        System.out.println("here2-----------------");

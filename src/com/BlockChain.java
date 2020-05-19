@@ -15,6 +15,12 @@ public class BlockChain {
 
     public boolean addBlock (Block block){
         System.out.println("Entered add block");
+        boolean blockExist = exist(block);
+        System.out.println("Block EXISTS: " + blockExist);
+        if(blockExist){
+            System.out.println("BLOCK ALREADY EXIST");
+            return false;
+        }
         if (this.block.getHash().equals(block.getPrevBlockHash())) {
             blockChain.add(new BlockChain(block));
             System.out.println("done1");
@@ -79,6 +85,15 @@ public class BlockChain {
                 break;
         }
         return current;
+    }
+
+    public Boolean exist(Block b){
+        if (block.equals(b))
+            return true;
+        for (BlockChain child : blockChain) {
+            return child.exist(b);
+        }
+        return false;
     }
 
     public Boolean checkDoubleSpend (String coin){

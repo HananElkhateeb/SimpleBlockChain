@@ -24,7 +24,7 @@ public class MinerReceiver {
         Thread t;
         long[] currDate = new long[1];
         // server is listening this port
-        ServerSocket ss = new ServerSocket(5051);
+        ServerSocket ss = new ServerSocket(5053);
 
         Thread watcher = new MineHandler(controller, currDate);
         watcher.start();
@@ -70,7 +70,7 @@ class MineHandler extends Thread{
     @Override
     public void run(){
         while (true){
-            if (new Date().getTime()-currDate[0] > 3000 && !controller.receivedTransactions.isEmpty()){
+            if (new Date().getTime()-currDate[0] > 7000 && !controller.receivedTransactions.isEmpty()){
                 try {
                     controller.mineBlock();
                 } catch (IOException e) {
@@ -141,9 +141,9 @@ class MinerReceiverHandler extends Thread {
                         t.setSignature(transactionPayload.getSignature());
 
                         controller.getReceivedTransactions(t);
-                        if (controller.receivedTransactions.size() >= 2){
+                        currDate[0] = new Date().getTime();
+                        if (controller.receivedTransactions.size() >= 3){
                             controller.mineBlock();
-                            currDate[0] = new Date().getTime();
                         }
 
                     } else {
