@@ -51,14 +51,13 @@ public class NodeSender {
                 if (tosend.equals("GetKey") && received!= null && !received.isEmpty()){
                     initializationFinishedState = false;
                     String[] receivedClientInfo = received.split("#&");
-                    System.out.println("Recieved info size : " + receivedClientInfo.length);
                     KeyFactory factory = KeyFactory.getInstance("EC");
                     int clientID = Integer.parseInt(receivedClientInfo[0]);
-                    System.out.println("*************************Pub  "+ receivedClientInfo[1]);
+//                    System.out.println("*************************Pub  "+ receivedClientInfo[1]);
                     PublicKey pub = (PublicKey) factory.generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(receivedClientInfo[1])));
                     networkPublicKeys.put(clientID, pub);
                 }
-                System.out.println(received);
+//                System.out.println(received);
                 System.out.println("Closing this connection : " + s);
                 s.close();
                 System.out.println("Connection closed");

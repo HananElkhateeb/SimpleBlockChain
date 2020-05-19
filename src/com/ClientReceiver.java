@@ -26,9 +26,9 @@ import java.util.Map;
 public class ClientReceiver {
     public static void main(String[] args) throws IOException {
         // server is listening on this port
-        ServerSocket ss = new ServerSocket(6062);
+        ServerSocket ss = new ServerSocket(6061);
 
-        int clientID = 2;
+        int clientID = 1;
         Client client = new Client(clientID);
         client.generateKeys();
 
