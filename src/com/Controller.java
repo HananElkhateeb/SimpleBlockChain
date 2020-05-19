@@ -108,7 +108,7 @@ public class Controller implements IController {
         blockMessage.setMessageType(MessagesTypes.BLOCK_MESSAGE.toString());
         Parser parser = new Parser();
         String message = parser.serializeMessage(blockMessage);
-        nodeSender.send(message, IPsDTO.minersIPs);
+        nodeSender.send(message, IPsDTO.minersPorts);
         currentBlock = null;
     }
 

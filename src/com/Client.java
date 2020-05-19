@@ -63,6 +63,7 @@ public class Client implements IClient {
 		for(TransactionOutput txo : outputs) {
 			//TODO if client does not exist
 			Integer clientID = txo.getOutputIndex();
+			System.out.println("Client: " + clientID + " is receiving a transaction");
 			txo.setReciever(Base64.getEncoder().encodeToString(nodes.get(clientID).getEncoded()));
 		}
 		transaction.generateSignature(this.privateKey);
@@ -110,7 +111,7 @@ public class Client implements IClient {
 		transMessage.setMessageType(MessagesTypes.TRANSACTION_MESSAGE.toString());
 		Parser parser = new Parser();
 		String message = parser.serializeMessage(transMessage);
-		nodeSender.send(message, IPsDTO.minersIPs);
+		nodeSender.send(message, IPsDTO.clientsIPs, IPsDTO.minersPorts);
     }
 
 	@Override

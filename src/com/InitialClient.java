@@ -6,9 +6,9 @@ import java.io.IOException;
 public class InitialClient {
     public static void main(String[] args) throws IOException {
         NodeSender nodeSender = new NodeSender();
-        nodeSender.send("GetKey", IPsDTO.clientsIPs);
+        nodeSender.send("GetKey", IPsDTO.clientsIPs, IPsDTO.clientsPorts);
         while (!nodeSender.initializationFinishedState);
-        nodeSender.send("StoreKeys", IPsDTO.clientsIPs);
+        nodeSender.send("StoreKeys", IPsDTO.clientsIPs, IPsDTO.clientsPorts);
         int clientID = 0;
         
         Client client = new Client(clientID);
@@ -17,7 +17,7 @@ public class InitialClient {
         client.getTransactions("/home/karim/IdeaProjects/SimpleBlockChain/src/com/resources/txdataset_v7.3.txt");
 
         //ToDo send Done to clients
-        new NodeSender().send("Done", IPsDTO.clientsIPs);
+        new NodeSender().send("Done", IPsDTO.clientsIPs, IPsDTO.clientsPorts);
 
     }
     
